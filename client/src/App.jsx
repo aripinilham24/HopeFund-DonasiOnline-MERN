@@ -1,16 +1,24 @@
 import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import Navbar from './components/Navbar';
 import HomePage from './pages';
 import DetailCampaign from './pages/detailCampaign';
+import Footer from './components/Footer';
 
 function App() {
 
   return (
     <>
     <Router>
+      <header className="fixed top-0 z-50 w-full">
+        <Navbar />
+      </header>
+      <main>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/detailcampaign/:id" element={<DetailCampaign />} />
       </Routes>
+      </main>
+      <Footer />
     </Router>
     </>
   )

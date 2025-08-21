@@ -1,6 +1,6 @@
 const navbar = () => {
     return (
-        <nav className="navbar bg-base-100 shadow-sm">
+        <nav className="navbar bg-blue-300 shadow-sm">
             <div className="flex-none">
                 <button className="btn btn-square btn-ghost">
                     <svg
@@ -20,7 +20,7 @@ const navbar = () => {
                 </button>
             </div>
             <div className="flex-1">
-                <a className="btn btn-ghost text-xl">hopeFund</a>
+                <a className="btn btn-ghost text-xl">HopeFund</a>
             </div>
             <div className="flex-none">
                 <button className="btn btn-square btn-ghost">
