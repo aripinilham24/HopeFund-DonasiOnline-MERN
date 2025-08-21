@@ -1,10 +1,12 @@
 import Carousel from "../components/Carousel";
 import { categoriesNav, urgentCampaignList } from "../assets";
 import CampaignCard from "../components/CampaignCard";
+import Footer from '../components/Footer';
 
 const HomePage = () => {
     return (
-        <section className="min-h-screen text-gray-950 p-10">
+        <>
+        <main className="min-h-screen text-gray-950 p-10">
             <Carousel />
 
             <div className="categories-bar flex justify-evenly items-center flex-wrap gap-3 p-5 bg-blue-300 rounded shadow-lg mt-15">
@@ -38,6 +40,7 @@ const HomePage = () => {
                     {urgentCampaignList.map((campaign, index) => (
                         <CampaignCard
                             key={index}
+                            id={campaign.id}
                             title={campaign.title}
                             desc={campaign.desc}
                             img={campaign.img}
@@ -45,7 +48,9 @@ const HomePage = () => {
                     ))}
                 </div>
             </div>
-        </section>
+        </main>
+        <Footer />
+        </>
     );
 };
 

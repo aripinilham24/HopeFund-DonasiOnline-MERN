@@ -35,19 +35,22 @@ const categoriesNav = [
 
 const urgentCampaignList = [
     {
+        id: 1,
         title: "Help the Homeless",
         desc: "Join us in providing shelter and food for the homeless community in our city. Every contribution counts!",
         img: "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
     },
     {
+        id: 2,
         title: "Support Education for All",
         desc: "Donate to help provide educational resources and scholarships for underprivileged children.",
         img: "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
     },
     {
+        id: 3,
         title: "Support Education for All",
         desc: "Donate to help provide educational resources and scholarships for underprivileged children.",
         img: "https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp",
-    }
-]
+    },
+];
 export { icons, categoriesNav, urgentCampaignList };
