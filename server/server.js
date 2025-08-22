@@ -1,21 +1,9 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
+import express from "express";
+import router from "./routes/campaignRoutes";
 
 const app = express();
-app.use(cors());
 app.use(express.json());
 
-// route test
-app.get("/", (req, res) => {
-    res.send("Server is running!");
-});
+app.use("/campaigns", router);
 
-// connect to MongoDB
-mongoose
-    .connect(process.env.MONGO_URI)
-    .then(() => {
-        console.log("MongoDB connected");
-        app.listen(5000, () => console.log("Server running on port 5000"));
-    })
-    .catch((err) => console.log(err));
+app.listen(5000, () => console.log("server running on port 5000"));
