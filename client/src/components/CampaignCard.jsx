@@ -6,7 +6,8 @@ const CampaignCard = ({title, desc, img, id}) => {
   <figure>
     <img
       src={img}
-      alt={title} />
+      alt={title}
+      className="w-100 h-50 object-cover"/>
   </figure>
   <div className="card-body">
     <h2 className="card-title">{title}</h2>

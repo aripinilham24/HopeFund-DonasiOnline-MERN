@@ -1,52 +1,18 @@
-import { DataTypes } from "sequelize";
-import sequelize from "../config/db.js";
+// src/models/Campaign.js
+import mongoose from "mongoose";
 
-const Campaign = sequelize.define(
-    "Campaign",
-    {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-        },
-        judul: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        deskripsi_singkat: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        deskripsi: {
-            type: DataTypes.TEXT,
-            allowNull: false,
-        },
-        target_donasi: {
-            type: DataTypes.BIGINT,
-            allowNull: false,
-        },
-        terkumpul: {
-            type: DataTypes.DECIMAL(10, 2),
-        },
-        deadline: {
-            type: DataTypes.DATE,
-            allowNull: false,
-        },
-        gambar: {
-            type: DataTypes.STRING,
-        },
-        dibuat_pada: {
-            type: DataTypes.DATE,
-            allowNull: false,
-        },
-        kategor: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-    },
-    {
-        tableName: "campaigns",
-    }
-);
+const campaignSchema = new mongoose.Schema({
+  title: { type: String, required: true, trim: true },
+  shortDescription: { type: String, trim: true },
+  description: { type: String },
+  targetAmount: { type: Number, required: true, min: 0 },
+  amountRaised: { type: Number, default: 0, min: 0 },
+  deadline: { type: Date, required: true },
+  image: { type: String },
+  createdAt: { type: Date, default: Date.now },
+  category: { type: String, trim: true }
+}, { timestamps: true, _id:true });
 
-export default Campaign;
+campaignSchema.index({ title: "text", category: 1 });
+
+export default mongoose.model("Campaign", campaignSchema);
