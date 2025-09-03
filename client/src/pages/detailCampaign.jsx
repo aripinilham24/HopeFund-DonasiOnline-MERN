@@ -31,6 +31,7 @@ const DetailCampaign = () => {
                         />
                         <h2 className="text-xl mt-5">{campaign.title}</h2>
                         <p>{campaign.description}</p>
+                        <a href="/form-donate" className="btn">Donate Now</a>
                     </div>
                 ) : (
                     <p>Campaign not found.</p>

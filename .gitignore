@@ -1,0 +1,23 @@
+# ===== Common =====
+.env
+*.log
+.DS_Store
+Thumbs.db
+
+# ===== Backend =====
+server/node_modules/
+server/dist/
+server/build/
+server/.env
+
+# ===== Frontend =====
+client/node_modules/
+client/dist/
+client/build/
+client/.next/
+client/.nuxt/
+client/.env
+
+# ===== Editor/IDE =====
+.vscode/
+.idea/
