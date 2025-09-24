@@ -57,7 +57,7 @@ const HomePage = () => {
                                 key={index}
                                 id={campaign._id}
                                 title={campaign.title}
-                                desc={campaign.description}
+                                desc={campaign.shortDescription}
                                 img={`http://localhost:5000/uploads/image/campaign/${campaign.image}`}
                             />
                         ))}
