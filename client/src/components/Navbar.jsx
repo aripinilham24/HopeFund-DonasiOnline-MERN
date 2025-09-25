@@ -1,6 +1,6 @@
 const navbar = () => {
     return (
-        <nav className="navbar bg-blue-300 shadow-sm">
+        <nav className="navbar bg-linear-65 from-blue-500 to-blue-300 shadow-xl">
             <div className="flex-none">
                 <button className="btn btn-square btn-ghost">
                     <svg

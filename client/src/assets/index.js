@@ -7,27 +7,27 @@ const icons = [
 
 const categoriesNav = [
     {
-        icon: "https://img.icons8.com/?size=100&id=36172&format=png&color=000000",
+        icon: "https://img.icons8.com/?size=100&id=36172&format=png&color=ffffff",
         name: "Health",
         link: "#",
     },
     {
-        icon: "https://img.icons8.com/?size=100&id=JMIXKPDzGWkw&format=png&color=000000",
+        icon: "https://img.icons8.com/?size=100&id=JMIXKPDzGWkw&format=png&color=ffffff",
         name: "Environment",
         link: "#",
     },
     {
-        icon: "https://img.icons8.com/?size=100&id=11225&format=png&color=000000",
+        icon: "https://img.icons8.com/?size=100&id=11225&format=png&color=ffffff",
         name: "Education",
         link: "#",
     },
     {
-        icon: "https://img.icons8.com/?size=100&id=ilGjDFCEpxw3&format=png&color=000000",
+        icon: "https://img.icons8.com/?size=100&id=ilGjDFCEpxw3&format=png&color=ffffff",
         name: "Elderly",
         link: "#",
     },
     {
-        icon: "https://img.icons8.com/?size=100&id=8625&format=png&color=000000",
+        icon: "https://img.icons8.com/?size=100&id=8625&format=png&color=ffffff",
         name: "Orphans",
         link: "#",
     },

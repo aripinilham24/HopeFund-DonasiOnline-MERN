@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 const CampaignCard = ({title, desc, img, id}) => {
   return (
-<div className="card bg-white w-94 shadow-sm">
+<div className="card bg-white w-94 shadow-lg">
   <figure>
     <img
       src={img}

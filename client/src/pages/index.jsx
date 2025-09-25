@@ -24,7 +24,7 @@ const HomePage = () => {
             <section className="min-h-screen text-gray-950 p-10">
                 <Carousel />
 
-                <div className="categories-bar flex justify-evenly items-center flex-wrap gap-3 p-5 bg-blue-300 rounded shadow-lg mt-15">
+                <div className="categories-bar flex justify-evenly items-center flex-wrap gap-3 p-5 bg-linear-65 from-blue-500 to-blue-300 rounded shadow-lg mt-15">
                     {categoriesNav.map((category, index) => (
                         <a
                             href={category.link}
@@ -36,12 +36,12 @@ const HomePage = () => {
                                 src={category.icon}
                                 alt={category.name}
                             />
-                            <h1 className="text-center">{category.name}</h1>
+                            <h1 className="text-center text-white">{category.name}</h1>
                         </a>
                     ))}
                 </div>
 
-                <div className="urgent-campaigns bg-blue-300 rounded shadow-lg mt-15 p-5">
+                <div className="urgent-campaigns bg-linear-65 from-blue-500 to-blue-300 rounded-lg shadow-lg mt-15 p-5">
                     <div className="title font-bold text-2xl flex items-center gap-2">
                         <img
                             className="h-10"
@@ -51,7 +51,7 @@ const HomePage = () => {
                         <h1>Urgent</h1>
                     </div>
 
-                    <div className="campaigns-list mt-10 flex flex-wrap gap-5 justify-center">
+                    <div className="campaigns-list mt-10 flex flex-wrap gap-2 justify-center">
                         {campaigns.map((campaign, index) => (
                             <CampaignCard
                                 key={index}
