@@ -1,7 +1,7 @@
 // server/routes/payment.js
 import express from "express";
 import snap from "../config/midtrans.js";
-import Transaction from "../models/transactionModel.js";
+import Transaction from "../models/Transaction.js";
 // (pastikan kamu punya model transaksi, nanti kita buat)
 
 const router = express.Router();

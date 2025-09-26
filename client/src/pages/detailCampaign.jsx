@@ -80,7 +80,7 @@ const DetailCampaign = () => {
                                 )}
                             </div>
                         </div>
-                        <a href="/form-donate" className="btn">
+                        <a href="/donation" className="btn">
                             Donate Now
                         </a>
                     </div>
