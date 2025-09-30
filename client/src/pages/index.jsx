@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from "react";
-import Carousel from "../components/Carousel";
+import Slider from "../components/Slider";
 import { categoriesNav } from "../assets";
 import CampaignCard from "../components/CampaignCard";
 
@@ -22,7 +22,7 @@ const HomePage = () => {
     return (
         <>
             <section className="min-h-screen text-gray-950 p-10">
-                <Carousel />
+                <Slider />
 
                 <div className="categories-bar flex justify-evenly items-center flex-wrap gap-3 p-5 bg-linear-65 from-blue-500 to-blue-300 rounded shadow-lg mt-15">
                     {categoriesNav.map((category, index) => (
@@ -48,7 +48,7 @@ const HomePage = () => {
                             src="https://img.icons8.com/?size=100&id=12226&format=png&color=000000"
                             alt="priority"
                         />
-                        <h1>Urgent</h1>
+                        <h1 className="text-white">Urgent</h1>
                     </div>
 
                     <div className="campaigns-list mt-10 flex flex-wrap gap-2 justify-center">
