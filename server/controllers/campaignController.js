@@ -12,6 +12,16 @@ export const getCampaigns = async (req, res) => {
     }
 };
 
+// name campaign
+export const getTitleCampaignsById = async (req, res) =>{
+    try {
+        const campaign = await Campaign.findById(req.params.id).select('title');
+        res.json({ success: true, data: campaign });
+    } catch (err) {
+        res.status(500).json({ success: false, message: err.message });
+    }
+}
+
 // Get campaign by ID
 export const getCampaignById = async (req, res) => {
     try {

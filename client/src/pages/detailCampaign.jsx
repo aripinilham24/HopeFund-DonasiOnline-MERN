@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { BackButton } from "../components/Buttoon";
+
 const DetailCampaign = () => {
     const { id } = useParams();
     const [campaign, setCampaign] = useState(null);
@@ -23,6 +25,8 @@ const DetailCampaign = () => {
     return (
         <>
             <section className="text-dark mt-10 grid grid-cols-1 justify-center">
+                <BackButton className="absolute top-20 left-5" />
+
                 {campaign ? (
                     <div className="campaign-detail mx-auto">
                         <div className="m-5 p-5">
@@ -40,14 +44,22 @@ const DetailCampaign = () => {
                                 {campaign.title}
                             </h2>
                             <div className="flex justify-between items-center">
-                                <span className="font-bold">🙍 {donor ? donor.length : 0} Donatur</span>
+                                <span className="font-bold">
+                                    🙍 {donor ? donor.length : 0} Donatur
+                                </span>
                                 <a href="#" className="btn">
                                     Share
                                 </a>
                             </div>
                             <div className="nominal-info text-blue-400 flex justify-between">
-                                <span>Terkumpul: Rp {campaign.amountRaised}</span>
-                                <span>Kurang: Rp {campaign.targetAmount - campaign.amountRaised}</span>
+                                <span>
+                                    Terkumpul: Rp {campaign.amountRaised}
+                                </span>
+                                <span>
+                                    Kurang: Rp{" "}
+                                    {campaign.targetAmount -
+                                        campaign.amountRaised}
+                                </span>
                             </div>
                         </div>
                         <div className="m-5 shadow-lg p-5">
@@ -69,7 +81,9 @@ const DetailCampaign = () => {
                                                 className="h-15 rounded-full"
                                             />
                                             <div className="flex flex-col">
-                                                <span className="font-bold">{donor.user.name}</span>
+                                                <span className="font-bold">
+                                                    {donor.user.name}
+                                                </span>
                                                 <span>Rp {donor.amount}</span>
                                                 <p>{donor.message}</p>
                                             </div>
@@ -80,7 +94,10 @@ const DetailCampaign = () => {
                                 )}
                             </div>
                         </div>
-                        <a href={`/donation/${id}`} className="btn btn-outline btn-primary w-full">
+                        <a
+                            href={`/donation/${id}`}
+                            className="btn btn-outline btn-primary w-full"
+                        >
                             Donate Now
                         </a>
                     </div>
