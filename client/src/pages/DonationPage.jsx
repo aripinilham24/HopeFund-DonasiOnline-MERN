@@ -5,6 +5,7 @@ import { BackButton } from "../components/Buttoon";
 
 function DonationPage() {
     const { id } = useParams();
+    const [clientKey, setClientKey] = useState("");
     const [campaign, setCampaign] = useState(null);
     const [amount, setAmount] = useState(0);
     const [showInput, setShowInput] = useState(false);
@@ -14,6 +15,32 @@ function DonationPage() {
     const [telp, setTelp] = useState("");
     const [anonymous, setAnonymous] = useState(true);
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const fetchClientKey = async () => {
+            try {
+                const res = await axios.get(
+                    "http://localhost:5000/api/payment/config"
+                );
+                setClientKey(res.data.clientKey);
+            } catch (err) {
+                console.log("Error fetching client key:", err);
+            }
+        };
+        fetchClientKey();
+    }, []);
+
+    useEffect(() => {
+        const script = document.createElement("script");
+        script.src = "https://app.sandbox.midtrans.com/snap/snap.js";
+        script.setAttribute("data-client-key", clientKey);
+        script.async = true;
+        document.body.appendChild(script);
+
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, [clientKey]);
 
     useEffect(() => {
         const fetchCampaign = async () => {
@@ -26,6 +53,7 @@ function DonationPage() {
                 console.log("Error fetching campaign:", err);
             }
         };
+
         fetchCampaign();
     }, [id]);
 
@@ -59,9 +87,28 @@ function DonationPage() {
                     },
                 }
             );
-            const { redirect_url } = resp.data;
-            // Arahkan user ke halaman pembayaran Midtrans
-            window.location.href = redirect_url;
+            const { token } = resp.data;
+            window.snap.pay(token, {
+                onSuccess: function (result) {
+                    /* You may add your own implementation here */
+                    alert("payment success!");
+                    console.log(result);
+                },
+                onPending: function (result) {
+                    /* You may add your own implementation here */
+                    alert("wating your payment!");
+                    console.log(result);
+                },
+                onError: function (result) {
+                    /* You may add your own implementation here */
+                    alert("payment failed!");
+                    console.log(result);
+                },
+                onClose: function () {
+                    /* You may add your own implementation here */
+                    alert("you closed the popup without finishing the payment");
+                },
+            });
         } catch (err) {
             console.error("Error saat membuat transaksi:", err);
             alert("Terjadi kesalahan saat membuat transaksi!");
