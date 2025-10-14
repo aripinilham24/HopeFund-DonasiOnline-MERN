@@ -1,22 +1,7 @@
-// server/routes/payment.js
-import express from "express";
 import snap from "../config/midtrans.js";
 import Transaction from "../models/Transaction.js";
-// (pastikan kamu punya model transaksi, nanti kita buat)
 
-const router = express.Router();
-
-router.get("/config", async (req, res) => {
-    try {
-        const clientKey = process.env.MIDTRANS_CLIENT_KEY;
-        res.json({ clientKey });
-    } catch (err) {
-        console.error("❌ Error fetching client key:", err.message);
-        res.status(500).json({ message: "Gagal mengambil client key" });
-    }
-})
-
-router.post("/create", async (req, res) => {
+export const createSnapTransaction = async (req, res) => {
     try {
         const { donateId, amount, message, customer, campaignId } = req.body;
 
@@ -60,6 +45,7 @@ router.post("/create", async (req, res) => {
         return res.status(201).json({
             success: true,
             message: "Transaksi berhasil dibuat",
+            redirect_url: transaction.redirect_url,
             token: transaction.token,
             transaction: newTransaction,
         });
@@ -70,9 +56,9 @@ router.post("/create", async (req, res) => {
             message: "Gagal membuat transaksi, silakan coba lagi.",
         });
     }
-});
+};
 
-router.post("/notification", express.json(), async (req, res) => {
+export const handleMidtransNotification = async (req, res) => {
     try {
         const notification = req.body;
 
@@ -102,6 +88,5 @@ router.post("/notification", express.json(), async (req, res) => {
         console.error("Error notification:", err);
         return res.status(500).json({ message: "Error" });
     }
-});
-
-export default router;
+};
+ 

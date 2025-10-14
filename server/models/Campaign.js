@@ -13,6 +13,4 @@ const campaignSchema = new mongoose.Schema({
   category: { type: String, trim: true }
 }, { timestamps: true, _id:true });
 
-campaignSchema.index({ title: "text", category: 1 });
-
 export default mongoose.model("Campaign", campaignSchema);
