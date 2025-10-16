@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { BackButton } from "../components/Buttoon";
+import { Title } from "react-head";
 
 const DetailCampaign = () => {
     const { id } = useParams();
@@ -24,6 +25,9 @@ const DetailCampaign = () => {
 
     return (
         <>
+            <Title>{`${
+                campaign ? `HopeFund | ${campaign.title}` : "Loading..."
+            }`}</Title>
             <section className="text-dark mt-10 grid grid-cols-1 justify-center">
                 <BackButton className="absolute top-20 left-5" />
 

@@ -1,8 +1,9 @@
-import axios from 'axios';
+import axios from "axios";
 import { useEffect, useState } from "react";
 import Slider from "../components/Slider";
 import { categoriesNav } from "../assets";
 import CampaignCard from "../components/CampaignCard";
+import { Title } from "react-head";
 
 const HomePage = () => {
     const [campaigns, setCampaigns] = useState([]);
@@ -19,8 +20,10 @@ const HomePage = () => {
         };
         getCampaigns();
     }, []);
+
     return (
         <>
+            <Title>HopeFund | Situs donasi online</Title>
             <section className="min-h-screen text-gray-950 p-10">
                 <Slider />
 
@@ -36,7 +39,9 @@ const HomePage = () => {
                                 src={category.icon}
                                 alt={category.name}
                             />
-                            <h1 className="text-center text-white">{category.name}</h1>
+                            <h1 className="text-center text-white">
+                                {category.name}
+                            </h1>
                         </a>
                     ))}
                 </div>
