@@ -13,14 +13,14 @@ export const getCampaigns = async (req, res) => {
 };
 
 // name campaign
-export const getTitleCampaignsById = async (req, res) =>{
+export const getTitleCampaignsById = async (req, res) => {
     try {
-        const campaign = await Campaign.findById(req.params.id).select('title');
+        const campaign = await Campaign.findById(req.params.id).select("title");
         res.json({ success: true, data: campaign });
     } catch (err) {
         res.status(500).json({ success: false, message: err.message });
     }
-}
+};
 
 // Get campaign by ID
 export const getCampaignById = async (req, res) => {
@@ -31,8 +31,9 @@ export const getCampaignById = async (req, res) => {
                 .status(404)
                 .json({ success: false, message: "Campaign not found" });
         }
-        const transactions = await Transaction.find({ campaign: req.params.id })
-      .populate("user");
+        const transactions = await Transaction.find({
+            campaign: req.params.id,
+        }).populate("user");
         res.json({
             success: true,
             campaign,

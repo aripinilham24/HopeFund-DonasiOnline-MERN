@@ -74,25 +74,44 @@ const DetailCampaign = () => {
                             <h3 className="font-bold">Donatur</h3>
                             <div className="flex flex-col gap-2">
                                 {donor && donor.length > 0 ? (
-                                    donor.map((donor, i) => (
-                                        <div
-                                            key={i}
-                                            className="flex gap-5 items-center border p-5 rounded text-grey-600"
-                                        >
-                                            <img
-                                                src={`http://localhost:5000/uploads/image/profile/${donor.user.avatar}`}
-                                                alt={donor.user.name}
-                                                className="h-15 rounded-full"
-                                            />
-                                            <div className="flex flex-col">
-                                                <span className="font-bold">
-                                                    {donor.user.name}
-                                                </span>
-                                                <span>Rp {donor.amount}</span>
-                                                <p>{donor.message}</p>
+                                    donor.map((donor, i) => {
+                                        let name = "";
+
+                                        if (
+                                            typeof donor.anonymous !== "undefined"
+                                        ) {
+                                            name = donor.anonymous
+                                                ? "Anonim"
+                                                : donor.donorName || "Anonim";
+                                        } else if (
+                                            donor.user &&
+                                            donor.user.name
+                                        ) {
+                                            name = donor.user.name;
+                                        }
+
+                                        return (
+                                            <div
+                                                key={i}
+                                                className="flex gap-5 items-center border p-5 rounded text-grey-600"
+                                            >
+                                                <img
+                                                    src={`http://localhost:5000/uploads/image/profile/${donor.user.avatar}`}
+                                                    alt={name}
+                                                    className="h-15 rounded-full"
+                                                />
+                                                <div className="flex flex-col">
+                                                    <span className="font-bold">
+                                                        {name}
+                                                    </span>
+                                                    <span>
+                                                        Rp {donor.amount}
+                                                    </span>
+                                                    <p>{donor.message}</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))
+                                        );
+                                    })
                                 ) : (
                                     <p>Belum ada donatur</p>
                                 )}
