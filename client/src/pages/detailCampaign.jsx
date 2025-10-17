@@ -78,7 +78,8 @@ const DetailCampaign = () => {
                                         let name = "";
 
                                         if (
-                                            typeof donor.anonymous !== "undefined"
+                                            typeof donor.anonymous !==
+                                            "undefined"
                                         ) {
                                             name = donor.anonymous
                                                 ? "Anonim"
@@ -90,13 +91,18 @@ const DetailCampaign = () => {
                                             name = donor.user.name;
                                         }
 
+                                        const avatar =
+                                            donor.user && donor.user.avatar
+                                                ? `http://localhost:5000/uploads/image/profile/${donor.user.avatar}`
+                                                : "http://localhost:5000/uploads/image/profile/user.jpg";
+
                                         return (
                                             <div
                                                 key={i}
                                                 className="flex gap-5 items-center border p-5 rounded text-grey-600"
                                             >
                                                 <img
-                                                    src={`http://localhost:5000/uploads/image/profile/${donor.user.avatar}`}
+                                                    src={avatar}
                                                     alt={name}
                                                     className="h-15 rounded-full"
                                                 />

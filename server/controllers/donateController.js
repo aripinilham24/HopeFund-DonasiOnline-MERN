@@ -32,6 +32,12 @@ export const createSnapTransaction = async (req, res) => {
                 email: customer.email,
                 phone: customer.telp,
             },
+
+            callbacks: {
+                finish: `http://localhost:5173/detailcampaign/${campaignId}`,
+                unfinish: `http://localhost:5173/detailcampaign/${campaignId}`,
+                error: `http://localhost:5173/detailcampaign/${campaignId}`,
+            },
         };
 
         const transaction = await snap.createTransaction(parameters);

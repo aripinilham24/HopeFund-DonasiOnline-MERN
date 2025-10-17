@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 const transactionSchema = new mongoose.Schema({
   donateId: { type: String, required: true, unique: true },
   campaign: { type: mongoose.Schema.Types.ObjectId, ref: "Campaign", required: true },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   donorName: { type: String, required: true },
   donorEmail: { type: String, required: true },
   donorTelpon: {type: String, required: true },

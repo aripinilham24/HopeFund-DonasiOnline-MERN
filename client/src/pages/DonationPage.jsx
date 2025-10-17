@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { BackButton } from "../components/Buttoon";
+import { Title } from "react-head";
+import Swal from "sweetalert2";
 
 function DonationPage() {
     const { id } = useParams();
@@ -61,12 +63,24 @@ function DonationPage() {
         e.preventDefault();
 
         if (amount <= 0) {
-            alert("Masukkan nominal donasi terlebih dahulu!");
+            Swal.fire({
+                title: "Warning!",
+                text: "Masukkan nominal donasi terlebih dahulu!",
+                icon: "warning",
+                confirmButtonText: "OK",
+                theme: "auto",
+            });
             return;
         }
 
         if (!name || !email || !telp) {
-            alert("Harap isi semua data identitas!");
+            Swal.fire({
+                title: "Warning!",
+                text: "Harap isi semua data identitas!",
+                icon: "warning",
+                confirmButtonText: "OK",
+                theme: "auto",
+            });
             return;
         }
         setLoading(true);
@@ -91,173 +105,206 @@ function DonationPage() {
             window.snap.pay(token, {
                 onSuccess: function (result) {
                     /* You may add your own implementation here */
-                    alert("payment success!");
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Donasi berhasil!",
+                        icon: "success",
+                        confirmButtonText: "OK",
+                        theme: "auto",
+                    });
                     console.log(result);
                 },
                 onPending: function (result) {
                     /* You may add your own implementation here */
-                    alert("wating your payment!");
+                    Swal.fire({
+                        title: "Pending!",
+                        text: "Menunggu transaksi!",
+                        icon: "info",
+                        confirmButtonText: "OK",
+                        theme: "auto",
+                    });
                     console.log(result);
                 },
                 onError: function (result) {
                     /* You may add your own implementation here */
-                    alert("payment failed!");
+                    Swal.fire({
+                        title: "Failed!",
+                        text: "Donasi gagal!",
+                        icon: "error",
+                        confirmButtonText: "OK",
+                        theme: "auto",
+                    });
                     console.log(result);
                 },
                 onClose: function () {
                     /* You may add your own implementation here */
-                    alert("you closed the popup without finishing the payment");
+                    Swal.fire({
+                        title: "Closed Transaction!",
+                        text: "Kamu menutup popup tanpa menyelesaikan trnsaksi!",
+                        icon: "info",
+                        confirmButtonText: "OK",
+                        theme: "auto",
+                    });
                 },
             });
         } catch (err) {
             console.error("Error saat membuat transaksi:", err);
-            alert("Terjadi kesalahan saat membuat transaksi!");
+            Swal.fire({
+                title: "Error!",
+                text: "Terjadi kesalahan saat membuat transaksi!",
+                icon: "error",
+                confirmButtonText: "OK",
+                theme: "auto",
+            });
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="mt-10 flex flex-col items-center gap-5">
-            <BackButton className="absolute top-20 left-5" />
-            <h2 className="font-bold text-lg">{campaign}</h2>
-            <form
-                onSubmit={handleDonate}
-                className="w-200 p-5 border-2 border-blue-400 rounded shadow-lg flex flex-col "
-            >
-                <div className="mb-10">
-                    <p className="font-semibold">Nominal Donasi</p>
-                    <div className="grid grid-cols-2 gap-4">
-                        {[30000, 50000, 100000].map((val, i) => (
-                            <label className="cursor-pointer" key={i}>
+        <>
+            <Title>{`Donation for ${campaign}`}</Title>
+            <div className="mt-10 flex flex-col items-center gap-5">
+                <BackButton className="absolute top-20 left-5" />
+                <h2 className="font-bold text-lg">{campaign}</h2>
+                <form
+                    onSubmit={handleDonate}
+                    className="w-200 p-5 border-2 border-blue-400 rounded shadow-lg flex flex-col "
+                >
+                    <div className="mb-10">
+                        <p className="font-semibold">Nominal Donasi</p>
+                        <div className="grid grid-cols-2 gap-4">
+                            {[30000, 50000, 100000].map((val, i) => (
+                                <label className="cursor-pointer" key={i}>
+                                    <input
+                                        type="radio"
+                                        name="donasi"
+                                        value={val}
+                                        className="peer hidden"
+                                        checked={Number(amount) === val}
+                                        onChange={(e) => {
+                                            setAmount(e.target.value);
+                                            setShowInput(false);
+                                        }}
+                                    />
+                                    <div className="rounded-full border border-blue-600 px-6 py-3 text-center font-semibold text-blue-700 peer-checked:bg-blue-600 peer-checked:text-white">
+                                        Rp {val.toLocaleString()}
+                                    </div>
+                                </label>
+                            ))}
+                            <label className="cursor-pointer">
                                 <input
                                     type="radio"
                                     name="donasi"
-                                    value={val}
+                                    value="lainnya"
                                     className="peer hidden"
-                                    checked={Number(amount) === val}
-                                    onChange={(e) => {
-                                        setAmount(e.target.value);
-                                        setShowInput(false);
-                                    }}
+                                    onChange={() => setShowInput(true)}
                                 />
                                 <div className="rounded-full border border-blue-600 px-6 py-3 text-center font-semibold text-blue-700 peer-checked:bg-blue-600 peer-checked:text-white">
-                                    Rp {val.toLocaleString()}
+                                    Lainnya
                                 </div>
                             </label>
-                        ))}
-                        <label className="cursor-pointer">
+                        </div>
+                        <div
+                            className={`flex flex-col mt-5 ${
+                                showInput ? "" : "hidden"
+                            }`}
+                        >
+                            <label className="text-gray-700" htmlFor="amount">
+                                Isi nominal donasi
+                            </label>
                             <input
-                                type="radio"
-                                name="donasi"
-                                value="lainnya"
-                                className="peer hidden"
-                                onChange={() => setShowInput(true)}
+                                type="number"
+                                name="amount"
+                                id="amount"
+                                min={1000}
+                                value={amount}
+                                className="rounded p-1 border border-gray-700"
+                                onChange={(e) => setAmount(e.target.value)}
                             />
-                            <div className="rounded-full border border-blue-600 px-6 py-3 text-center font-semibold text-blue-700 peer-checked:bg-blue-600 peer-checked:text-white">
-                                Lainnya
-                            </div>
-                        </label>
+                        </div>
                     </div>
-                    <div
-                        className={`flex flex-col mt-5 ${
-                            showInput ? "" : "hidden"
-                        }`}
-                    >
-                        <label className="text-gray-700" htmlFor="amount">
-                            Isi nominal donasi
+
+                    <div className="mb-10 flex flex-col gap-2">
+                        <label htmlFor="message" className="font-semibold">
+                            Dukungan dan Doa untuk campaign
                         </label>
-                        <input
-                            type="number"
-                            name="amount"
-                            id="amount"
-                            min={1000}
-                            value={amount}
-                            className="rounded p-1 border border-gray-700"
-                            onChange={(e) => setAmount(e.target.value)}
+                        <textarea
+                            name="message"
+                            id="message"
+                            className="p-2 border border-gray-800 rounded h-50"
+                            placeholder="tulis dukunganmu di sini"
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
                         />
                     </div>
-                </div>
 
-                <div className="mb-10 flex flex-col gap-2">
-                    <label htmlFor="message" className="font-semibold">
-                        Dukungan dan Doa untuk campaign
-                    </label>
-                    <textarea
-                        name="message"
-                        id="message"
-                        className="p-2 border border-gray-800 rounded h-50"
-                        placeholder="tulis dukunganmu di sini"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                    />
-                </div>
+                    <div className="mb-10 flex flex-col gap-2">
+                        <p className="font-semibold">
+                            Masukan Identitas Kamu di Sini
+                        </p>
 
-                <div className="mb-10 flex flex-col gap-2">
-                    <p className="font-semibold">
-                        Masukan Identitas Kamu di Sini
-                    </p>
+                        <label className="text-gray-700" htmlFor="name">
+                            Nama <span className="text-red-600">*</span>
+                        </label>
+                        <input
+                            className="rounded h-10 border border-blue-400 p-1"
+                            type="text"
+                            name="name"
+                            id="name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                        />
 
-                    <label className="text-gray-700" htmlFor="name">
-                        Nama <span className="text-red-600">*</span>
-                    </label>
-                    <input
-                        className="rounded h-10 border border-blue-400 p-1"
-                        type="text"
-                        name="name"
-                        id="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                    />
+                        <label className="text-gray-700" htmlFor="email">
+                            Email <span className="text-red-600">*</span>
+                        </label>
+                        <input
+                            className="rounded h-10 border border-blue-400 p-1"
+                            type="email"
+                            name="email"
+                            id="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
 
-                    <label className="text-gray-700" htmlFor="email">
-                        Email <span className="text-red-600">*</span>
-                    </label>
-                    <input
-                        className="rounded h-10 border border-blue-400 p-1"
-                        type="email"
-                        name="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-
-                    <label className="text-gray-700" htmlFor="telp">
-                        No. Telpon <span className="text-red-600">*</span>
-                    </label>
-                    <input
-                        className="rounded h-10 border border-blue-400 p-1"
-                        type="number"
-                        name="telp"
-                        id="telp"
-                        min={0}
-                        value={telp}
-                        onChange={(e) => setTelp(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <input
-                        type="checkbox"
-                        name="anonymous"
-                        id="anonymous"
-                        checked={anonymous}
-                        className="checkbox checkbox-info me-2"
-                        onChange={() => setAnonymous(!anonymous)}
-                    />
-                    <label htmlFor="anonymous">Sembunyikan Nama</label>
-                </div>
-                <button
-                    type="submit"
-                    className="btn btn-outline btn-info mt-8"
-                    disabled={loading}
-                >
-                    {loading ? "Memproses..." : "Donasi Sekarang"}
-                </button>
-            </form>
-        </div>
+                        <label className="text-gray-700" htmlFor="telp">
+                            No. Telpon <span className="text-red-600">*</span>
+                        </label>
+                        <input
+                            className="rounded h-10 border border-blue-400 p-1"
+                            type="number"
+                            name="telp"
+                            id="telp"
+                            min={0}
+                            value={telp}
+                            onChange={(e) => setTelp(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div>
+                        <input
+                            type="checkbox"
+                            name="anonymous"
+                            id="anonymous"
+                            checked={anonymous}
+                            className="checkbox checkbox-info me-2"
+                            onChange={() => setAnonymous(!anonymous)}
+                        />
+                        <label htmlFor="anonymous">Sembunyikan Nama</label>
+                    </div>
+                    <button
+                        type="submit"
+                        className="btn btn-outline btn-info mt-8"
+                        disabled={loading}
+                    >
+                        {loading ? "Memproses..." : "Donasi Sekarang"}
+                    </button>
+                </form>
+            </div>
+        </>
     );
 }
 
