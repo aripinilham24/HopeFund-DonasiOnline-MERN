@@ -4,6 +4,7 @@ import HomePage from "./pages";
 import DetailCampaign from "./pages/detailCampaign";
 import Footer from "./components/Footer";
 import DonationPage from "./pages/DonationPage";
+import Login from "./components/Login";
 import { HeadProvider } from "react-head";
 
 function App() {
@@ -24,6 +25,10 @@ function App() {
                             <Route
                                 path="/donation/:id"
                                 element={<DonationPage />}
+                            />
+                            <Route
+                                path="/login"
+                                element={<Login />}
                             />
                         </Routes>
                     </main>
