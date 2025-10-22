@@ -1,11 +1,14 @@
 import { icons } from "../assets/index.js";
 import { useState, useEffect } from "react";
-import {Title} from "react-head";
+import { Title } from "react-head";
+import Swal from "sweetalert2";
+import api from "../api/axios.js";
 
 const Login = () => {
     const googleicon = icons.find((icon) => icon.name === "google");
     const [isDark, setDark] = useState(false);
-    const [isLoad, setIsLoad] = useState(false);
+    const [isLoad, setIsLoaded] = useState(false);
+    const [isSubmitting, setSubmitting] = useState(false);
     // const switchBg = () => {
     //     setDark((prev) => !prev);
     //     localStorage.setItem("theme", JSON.stringify(!isDark));
@@ -15,9 +18,80 @@ const Login = () => {
         if (savedTheme !== null) {
             setDark(savedTheme);
         }
-        setIsLoad(true);
+        setIsLoaded(true);
     }, []);
     if (!isLoad) return null;
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setSubmitting(true);
+
+        const username = e.target.username.value;
+        const password = e.target.password.value;
+
+        if (!username || !password) {
+            Swal.fire({
+                icon: "warning",
+                title: "Data tidak lengkap",
+                text: "Harap isi username dan password.",
+            });
+            setSubmitting(false);
+            return;
+        }
+
+        if (username.length < 3) {
+            Swal.fire({
+                icon: "warning",
+                title: "Username terlalu pendek",
+                text: "Minimal 3 karakter.",
+            });
+            setSubmitting(false);
+            return;
+        }
+        if (password.length < 6) {
+            Swal.fire({
+                icon: "warning",
+                title: "Password terlalu pendek",
+                text: "Minimal 6 karakter.",
+            });
+            setSubmitting(false);
+            return;
+        }
+
+        try {
+            const res = await api.post("/auth/login", {
+                username,
+                password,
+            });
+
+            Swal.fire({
+                icon: "success",
+                title: "Login Berhasil",
+                text: `Selamat datang, ${res.data.user?.username || username}!`,
+            });
+
+            // contoh simpan token
+            localStorage.setItem("token", res.data.token || "");
+
+            if (!res.data?.token) {
+                throw new Error("Token tidak ditemukan di response.");
+            }
+            
+            // redirect (opsional)
+            window.location.href = "/dashboard";
+        } catch (err) {
+            console.error(err);
+            Swal.fire({
+                icon: "error",
+                title: "Login Gagal",
+                text:
+                    err.response?.data?.message || "Terjadi kesalahan server.",
+            });
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
     return (
         <>
             <Title>HopeFund | Login</Title>
@@ -27,7 +101,7 @@ const Login = () => {
                 }`}
             >
                 <form
-                    action=""
+                    onSubmit={handleLogin}
                     className={`${
                         isDark
                             ? "bg-dark text-light shadow-light"
@@ -41,6 +115,7 @@ const Login = () => {
                     >
                         <span className="me-2">🙍</span>{" "}
                         <input
+                            required
                             className="w-full"
                             type="text"
                             name="username"
@@ -54,6 +129,7 @@ const Login = () => {
                     >
                         <span className="me-2">🔑</span>{" "}
                         <input
+                            required
                             className="w-full"
                             type="password"
                             name="password"
@@ -61,8 +137,12 @@ const Login = () => {
                             placeholder="password"
                         />
                     </label>
-                    <button type="submit" className="btn btn-warning">
-                        Log In
+                    <button
+                        type="submit"
+                        className="btn btn-warning"
+                        disabled={isSubmitting}
+                    >
+                        {isSubmitting ? "Logging in ..." : "Login"}
                     </button>
 
                     <a

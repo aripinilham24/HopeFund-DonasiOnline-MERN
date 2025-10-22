@@ -19,6 +19,7 @@ app.use(express.json());
 await connectDB();
 
 app.use("/api/campaigns", campaignRoutes);
+app.use("/api/auth", authRoutes);
 app.use("/api/payment", donateRoutes);
 
 const PORT = process.env.PORT || 5000;
