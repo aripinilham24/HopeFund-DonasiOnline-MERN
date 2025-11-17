@@ -4,39 +4,33 @@ import HomePage from "./pages";
 import DetailCampaign from "./pages/detailCampaign";
 import Footer from "./components/Footer";
 import DonationPage from "./pages/DonationPage";
-import Login from "./components/Login";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
 import { HeadProvider } from "react-head";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 function App() {
-    return (
-        <>
-            <HeadProvider>
-                <Router>
-                    <header className="fixed top-0 z-50 w-full">
-                        <Navbar />
-                    </header>
-                    <main>
-                        <Routes>
-                            <Route path="/" element={<HomePage />} />
-                            <Route
-                                path="/detailcampaign/:id"
-                                element={<DetailCampaign />}
-                            />
-                            <Route
-                                path="/donation/:id"
-                                element={<DonationPage />}
-                            />
-                            <Route
-                                path="/login"
-                                element={<Login />}
-                            />
-                        </Routes>
-                    </main>
-                    <Footer />
-                </Router>
-            </HeadProvider>
-        </>
-    );
+  return (
+    <>
+      <HeadProvider>
+        <Router>
+          <header className="fixed top-0 z-50 w-full">
+            <Navbar />
+          </header>
+          <main>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/detailcampaign/:id" element={<DetailCampaign />} />
+              <Route path="/donation/:id" element={<DonationPage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+            </Routes>
+          </main>
+          <Footer />
+        </Router>
+      </HeadProvider>
+    </>
+  );
 }
 
 export default App;

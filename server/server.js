@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { connectDB } from "./config/db.js";
 import campaignRoutes from "./routes/campaignRoutes.js";
 import donateRoutes from "./routes/donateRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 import path from "path";
 import { fileURLToPath } from 'url';
 
