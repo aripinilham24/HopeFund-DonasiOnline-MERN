@@ -6,6 +6,7 @@ import Footer from "./components/Footer";
 import DonationPage from "./pages/DonationPage";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
+import ForgotPw from "./components/auth/ForgotPw";
 import { HeadProvider } from "react-head";
 import "bootstrap-icons/font/bootstrap-icons.css";
 
@@ -24,6 +25,7 @@ function App() {
               <Route path="/donation/:id" element={<DonationPage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/forgot-pw" element={<ForgotPw />} />
             </Routes>
           </main>
           <Footer />

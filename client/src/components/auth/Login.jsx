@@ -1,196 +1,152 @@
 import { icons } from "../../assets/index.js";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Title } from "react-head";
 import Swal from "sweetalert2";
 import api from "../../api/axios.js";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Login = () => {
-    const googleicon = icons.find((icon) => icon.name === "google");
-    const [isDark, setDark] = useState(false);
-    const [isLoad, setIsLoaded] = useState(false);
-    const [isSubmitting, setSubmitting] = useState(false);
-    // const switchBg = () => {
-    //     setDark((prev) => !prev);
-    //     localStorage.setItem("theme", JSON.stringify(!isDark));
-    // };
-    useEffect(() => {
-        const savedTheme = JSON.parse(localStorage.getItem("theme"));
-        if (savedTheme !== null) {
-            setDark(savedTheme);
-        }
-        setIsLoaded(true);
-    }, []);
-    if (!isLoad) return null;
+  const googleicon = icons.find((icon) => icon.name === "google");
+  const [isSubmitting, setSubmitting] = useState(false);
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        setSubmitting(true);
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
 
-        const username = e.target.username.value;
-        const password = e.target.password.value;
+    const username = e.target.username.value;
+    const password = e.target.password.value;
 
-        if (!username || !password) {
-            Swal.fire({
-                icon: "warning",
-                title: "Data tidak lengkap",
-                text: "Harap isi username dan password.",
-            });
-            setSubmitting(false);
-            return;
-        }
+    if (!username || !password) {
+      Swal.fire({
+        icon: "warning",
+        title: "Data tidak lengkap",
+        text: "Harap isi username dan password.",
+      });
+      setSubmitting(false);
+      return;
+    }
 
-        if (username.length < 3) {
-            Swal.fire({
-                icon: "warning",
-                title: "Username terlalu pendek",
-                text: "Minimal 3 karakter.",
-            });
-            setSubmitting(false);
-            return;
-        }
-        if (password.length < 6) {
-            Swal.fire({
-                icon: "warning",
-                title: "Password terlalu pendek",
-                text: "Minimal 6 karakter.",
-            });
-            setSubmitting(false);
-            return;
-        }
+    if (username.length < 3) {
+      Swal.fire({
+        icon: "warning",
+        title: "Username terlalu pendek",
+        text: "Minimal 3 karakter.",
+      });
+      setSubmitting(false);
+      return;
+    }
+    if (password.length < 6) {
+      Swal.fire({
+        icon: "warning",
+        title: "Password terlalu pendek",
+        text: "Minimal 6 karakter.",
+      });
+      setSubmitting(false);
+      return;
+    }
 
-        try {
-            const res = await api.post("/auth/login", {
-                username,
-                password,
-            });
+    try {
+      const res = await api.post("/auth/login", {
+        username,
+        password,
+      });
 
-            Swal.fire({
-                icon: "success",
-                title: "Login Berhasil",
-                text: `Selamat datang, ${res.data.user?.username || username}!`,
-            });
+      // contoh simpan token
+      localStorage.setItem("token", res.data.token || "");
 
-            // contoh simpan token
-            localStorage.setItem("token", res.data.token || "");
+      if (!res.data?.token) {
+        throw new Error("Token tidak ditemukan di response.");
+      }
 
-            if (!res.data?.token) {
-                throw new Error("Token tidak ditemukan di response.");
-            }
-            
-            // redirect (opsional)
-            window.location.href = "/dashboard";
-        } catch (err) {
-            console.error(err);
-            Swal.fire({
-                icon: "error",
-                title: "Login Gagal",
-                text:
-                    err.response?.data?.message || "Terjadi kesalahan server.",
-            });
-        } finally {
-            setSubmitting(false);
-        }
-    };
+      // redirect (opsional)
+      window.location.href = "/dashboard";
+    } catch (err) {
+      console.error(err);
+      Swal.fire({
+        icon: "error",
+        title: "Login Gagal",
+        text: err.response?.data?.message || "Terjadi kesalahan server.",
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
-    return (
-        <>
-            <Title>HopeFund | Login</Title>
-            <div
-                className={`min-h-screen flex items-center justify-center ${
-                    isDark ? "bg-dark" : "bg-light"
-                }`}
+  return (
+    <>
+      <Title>HopeFund | Login</Title>
+      <div className="min-h-screen flex items-center justify-center gap-10">
+        <div className="flex items-center justify-center">
+          <form
+            onSubmit={handleLogin}
+            className="rounded flex flex-col gap-5 p-5 shadow-lg"
+          >
+            <h1 className="text-center font-bold text-xl">LOGIN</h1>
+
+            <label
+              htmlFor="username"
+              className="flex border border-gray-400 p-3 rounded gap-2 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-blue-500 focus-within:border-blue-500"
             >
-                <form
-                    onSubmit={handleLogin}
-                    className={`${
-                        isDark
-                            ? "bg-dark text-light shadow-light"
-                            : "bg-gradient text-light shadow"
-                    } rounded flex flex-col gap-5 w-[20rem] p-5`}
-                >
-                    <h1 className="text-center font-bold text-xl">LOGIN</h1>
-                    <label
-                        htmlFor="username"
-                        className="input border border-yellow-300 rounded p-2 flex bg-transparent"
-                    >
-                        <span className="me-2">🙍</span>{" "}
-                        <input
-                            required
-                            className="w-full"
-                            type="text"
-                            name="username"
-                            id="username"
-                            placeholder="username"
-                        />
-                    </label>
-                    <label
-                        htmlFor="password"
-                        className="input border border-yellow-300 rounded p-2 flex bg-transparent"
-                    >
-                        <span className="me-2">🔑</span>{" "}
-                        <input
-                            required
-                            className="w-full"
-                            type="password"
-                            name="password"
-                            id="password"
-                            placeholder="password"
-                        />
-                    </label>
-                    <button
-                        type="submit"
-                        className="btn btn-warning"
-                        disabled={isSubmitting}
-                    >
-                        {isSubmitting ? "Logging in ..." : "Login"}
-                    </button>
+              <i class="bi bi-person-fill"></i>
+              <input
+                type="text"
+                name="username"
+                required
+                placeholder="username"
+                className="w-xs outline-none"
+              />
+            </label>
+            <label
+              htmlFor="password"
+              className="flex border border-gray-400 p-3 rounded gap-2 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-blue-500 focus-within:border-blue-500"
+            >
+              <i class="bi bi-key-fill"></i>
+              <input
+                type="password"
+                name="password"
+                required
+                placeholder="password"
+                className="w-xs outline-none"
+              />
+            </label>
+            <button
+              type="submit"
+              className="btn bg-blue-500 border-none hover:bg-blue-600"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Logging in ..." : "Login"}
+            </button>
 
-                    <a
-                        className="btn btn-soft border-none bg-light text-dark hover:shadow-none hover:bg-gray-300"
-                        href="#googlelogin"
-                    >
-                        <img
-                            className="h-6"
-                            src={googleicon.link}
-                            alt={googleicon.name}
-                        />
-                        Login with Google
-                    </a>
+            <a
+              className="btn btn-soft border-none bg-light text-dark hover:shadow-none hover:bg-gray-300"
+              href="#googlelogin"
+            >
+              <img
+                className="h-6"
+                src={googleicon.link}
+                alt={googleicon.name}
+              />
+              Login with Google
+            </a>
 
-                    <div className="flex justify-between text-sm">
-                        <Link to="/register">Sign Up</Link>
-                        <Link to="forgot-pw">Lupa Password</Link>
-                    </div>
-                </form>
-                {/* theme controller */}
-                {/* <label className="swap swap-rotate bg-dark border border-gray-100 rounded-full p-1 fixed bottom-5 right-5">
-                <input
-                    type="checkbox"
-                    className="theme-controller"
-                    onChange={switchBg}
-                    checked={isDark}
-                />
-
-                <svg
-                    className="swap-off h-10 w-10 fill-current"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                >
-                    <path d="M5.64,17l-.71.71a1,1,0,0,0,0,1.41,1,1,0,0,0,1.41,0l.71-.71A1,1,0,0,0,5.64,17ZM5,12a1,1,0,0,0-1-1H3a1,1,0,0,0,0,2H4A1,1,0,0,0,5,12Zm7-7a1,1,0,0,0,1-1V3a1,1,0,0,0-2,0V4A1,1,0,0,0,12,5ZM5.64,7.05a1,1,0,0,0,.7.29,1,1,0,0,0,.71-.29,1,1,0,0,0,0-1.41l-.71-.71A1,1,0,0,0,4.93,6.34Zm12,.29a1,1,0,0,0,.7-.29l.71-.71a1,1,0,1,0-1.41-1.41L17,5.64a1,1,0,0,0,0,1.41A1,1,0,0,0,17.66,7.34ZM21,11H20a1,1,0,0,0,0,2h1a1,1,0,0,0,0-2Zm-9,8a1,1,0,0,0-1,1v1a1,1,0,0,0,2,0V20A1,1,0,0,0,12,19ZM18.36,17A1,1,0,0,0,17,18.36l.71.71a1,1,0,0,0,1.41,0,1,1,0,0,0,0-1.41ZM12,6.5A5.5,5.5,0,1,0,17.5,12,5.51,5.51,0,0,0,12,6.5Zm0,9A3.5,3.5,0,1,1,15.5,12,3.5,3.5,0,0,1,12,15.5Z" />
-                </svg>
-
-                <svg
-                    className="swap-on h-10 w-10 fill-current"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                >
-                    <path d="M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z" />
-                </svg>
-            </label> */}
+            <div className="flex justify-between text-sm">
+              <Link to="/register">Sign Up</Link>
+              <Link to="/forgot-pw">Lupa Password</Link>
             </div>
-        </>
-    );
+          </form>
+        </div>
+        <div className="w-lg flex flex-col items-center justify-center">
+          <h1 className="text-center text-blue-500 text-5xl font-bold mb-4">
+            HopeFund
+          </h1>
+          <p className="text-xl">
+            Mari jadi bagian dari gerakan kebaikan. Login atau daftar sekarang
+            untuk mulai berdonasi dengan mudah, cepat, dan transparan.
+          </p>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Login;
