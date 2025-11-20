@@ -137,9 +137,9 @@ const ForgotPw = () => {
   return (
     <>
       <Title>Lupa Password</Title>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="rounded shadow-lg p-8 w-full max-w-md">
-          <h1 className="text-center font-bold text-2xl mb-6">Lupa Password</h1>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="rounded shadow-lg p-8 w-full max-w-md bg-gray-50">
+          <h1 className="text-center font-bold text-2xl mb-6">Forgot Password</h1>
 
           {/* Step 1: Email */}
           {step === "email" && (
@@ -161,7 +161,7 @@ const ForgotPw = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="btn bg-blue-500 border-none hover:bg-blue-600 w-full disabled:opacity-50"
+                className="btn bg-gradient border-none bg-gradient-hover transition-all duration-300 w-full"
               >
                 {isSubmitting ? "Mengirim..." : "Kirim Kode OTP"}
               </button>

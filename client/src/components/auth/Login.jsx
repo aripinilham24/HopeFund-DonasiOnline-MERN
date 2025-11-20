@@ -51,15 +51,15 @@ const Login = () => {
         password,
       });
 
-      // contoh simpan token
-      localStorage.setItem("token", res.data.token || "");
+      localStorage.setItem("accessToken", res.data.accessToken);
+      localStorage.setItem("refreshToken", res.data.refreshToken);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      if (!res.data?.token) {
-        throw new Error("Token tidak ditemukan di response.");
+      if (!res.data?.accessToken) {
+        throw new Error("token tidak ditemukan di response.");
+      } else {
+        window.location.href = "/";
       }
-
-      // redirect (opsional)
-      window.location.href = "/dashboard";
     } catch (err) {
       console.error(err);
       Swal.fire({
@@ -75,8 +75,8 @@ const Login = () => {
   return (
     <>
       <Title>HopeFund | Login</Title>
-      <div className="min-h-screen flex items-center justify-center gap-10">
-        <div className="flex items-center justify-center">
+      <div className="min-h-screen flex flex-col-reverse lg:flex-row items-center justify-center gap-10">
+        <div className="flex items-center justify-center bg-gray-50">
           <form
             onSubmit={handleLogin}
             className="rounded flex flex-col gap-5 p-5 shadow-lg"
@@ -93,7 +93,7 @@ const Login = () => {
                 name="username"
                 required
                 placeholder="username"
-                className="w-xs outline-none"
+                className="lg:w-xs outline-none"
               />
             </label>
             <label
@@ -106,12 +106,12 @@ const Login = () => {
                 name="password"
                 required
                 placeholder="password"
-                className="w-xs outline-none"
+                className="lg:w-xs outline-none"
               />
             </label>
             <button
               type="submit"
-              className="btn bg-blue-500 border-none hover:bg-blue-600"
+              className="btn bg-gradient border-none bg-gradient-hover transition-all duration-300"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Logging in ..." : "Login"}
@@ -131,15 +131,15 @@ const Login = () => {
 
             <div className="flex justify-between text-sm">
               <Link to="/register">Sign Up</Link>
-              <Link to="/forgot-pw">Lupa Password</Link>
+              <Link to="/forgot-pw">Forgot Password</Link>
             </div>
           </form>
         </div>
-        <div className="w-lg flex flex-col items-center justify-center">
-          <h1 className="text-center text-blue-500 text-5xl font-bold mb-4">
+        <div className="w-xs lg:w-lg flex flex-col items-center justify-center">
+          <h1 className="text-center text-blue-500 text-3xl lg:text-5xl font-bold mb-4">
             HopeFund
           </h1>
-          <p className="text-xl">
+          <p className="lg:text-xl">
             Mari jadi bagian dari gerakan kebaikan. Login atau daftar sekarang
             untuk mulai berdonasi dengan mudah, cepat, dan transparan.
           </p>

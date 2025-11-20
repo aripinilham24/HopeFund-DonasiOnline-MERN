@@ -4,7 +4,7 @@
 html, body {
   margin: 0;
   padding: 0;
-  background-color: var(--color-gray-50);
+  background-color: var(--color-blue-50);
   overflow: auto;
   scrollbar-width: none; 
 }
@@ -34,5 +34,8 @@ main {
   }
   .bg-gradient {
     @apply bg-linear-to-r/srgb from-indigo-500 to-teal-500;
+  }
+  .bg-gradient-hover:hover {
+    @apply bg-linear-to-r/srgb from-teal-500 to-indigo-500;
   }
 }

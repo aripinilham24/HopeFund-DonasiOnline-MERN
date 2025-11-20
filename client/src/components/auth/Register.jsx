@@ -5,7 +5,6 @@ import Swal from "sweetalert2";
 import api from "../../api/axios";
 import { icons } from "../../assets/index.js";
 
-
 const Register = () => {
   const googleicon = icons.find((icon) => icon.name === "google");
   const [isSubmitting, setSubmitting] = useState(false);
@@ -44,20 +43,30 @@ const Register = () => {
     }
 
     try {
-        const res = await api.post("/auth/register", {
-            username, email, password
-        })
-        
+      const res = await api.post("/auth/register", {
+        username,
+        email,
+        password,
+      });
 
-    } catch(err) {
+      localStorage.setItem("accessToken", res.data.accessToken);
+      localStorage.setItem("refreshToken", res.data.refreshToken);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
+      if (!res.data?.accessToken) {
+        throw new Error("token tidak ditemukan di response.");
+      } else {
+        window.location.href = "/";
+      }
+    } finally {
+      setSubmitting(false);
     }
   };
   return (
     <>
       <Title>Sign Up</Title>
-      <div className="min-h-screen flex items-center justify-center gap-10">
-        <div className="flex items-center justfy-center">
+      <div className="min-h-screen flex flex-col-reverse lg:flex-row items-center justify-center gap-10">
+        <div className="flex items-center justfy-center bg-gray-50">
           <form
             onSubmit={handlesignUp}
             className="rounded flex flex-col gap-5 shadow-lg p-5"
@@ -68,13 +77,13 @@ const Register = () => {
               htmlFor="username"
               className="flex border border-gray-400 rounded p-3 gap-2 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-blue-500 focus-within:border-blue-500"
             >
-              <i class="bi bi-person-fill"></i>
+              <i className="bi bi-person-fill"></i>
               <input
                 type="text"
                 name="username"
                 placeholder="username"
                 required
-                className="w-xs outline-none"
+                className="lg:w-xs outline-none"
               />
             </label>
 
@@ -82,13 +91,13 @@ const Register = () => {
               htmlFor="email"
               className="flex border border-gray-400 rounded p-3 gap-2 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-blue-500 focus-within:border-blue-500"
             >
-              <i class="bi bi-envelope-fill"></i>
+              <i className="bi bi-envelope-fill"></i>
               <input
                 type="email"
                 name="email"
                 placeholder="email"
                 required
-                className="w-xs outline-none"
+                className="lg:w-xs outline-none"
               />
             </label>
 
@@ -96,19 +105,19 @@ const Register = () => {
               htmlFor="password"
               className="flex border border-gray-400 rounded p-3 gap-2 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-blue-500 focus-within:border-blue-500"
             >
-              <i class="bi bi-key-fill"></i>
+              <i className="bi bi-key-fill"></i>
               <input
                 type="password"
                 name="password"
                 placeholder="password"
                 required
-                className="w-xs outline-none"
+                className="lg:w-xs outline-none"
               />
             </label>
 
             <button
               type="submit"
-              className="btn bg-blue-500 hover:bg-blue-600 border-none"
+              className="btn bg-gradient border-none bg-gradient-hover transition-all duration-300"
               disabled={isSubmitting}
             >
               {isSubmitting ? "Loading ..." : "Register"}
@@ -132,11 +141,11 @@ const Register = () => {
           </form>
         </div>
 
-        <div className="w-lg flex flex-col items-center justify-center">
-          <h1 className="text-center text-blue-500 text-5xl font-bold mb-4">
+        <div className="w-xs lg:w-lg flex flex-col items-center justify-center">
+          <h1 className="text-center text-blue-500 text-3xl lg:text-5xl font-bold mb-4">
             HopeFund
           </h1>
-          <p className="text-xl">
+          <p className="lg:text-xl">
             Mari jadi bagian dari gerakan kebaikan. Login atau daftar sekarang
             untuk mulai berdonasi dengan mudah, cepat, dan transparan.
           </p>
