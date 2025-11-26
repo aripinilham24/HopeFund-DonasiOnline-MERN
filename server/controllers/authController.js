@@ -1,59 +1,70 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 
-// Generate JWT
+dotenv.config();
+
 const generateToken = (user) => {
-  return jwt.sign(
-    { id: user._id, role: user.role },
-    process.env.JWT_SECRET,
-    { expiresIn: "7d" }
-  );
+  return jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
+    expiresIn: "15m",
+  });
 };
 
-// ========================
-// REGISTER (LOCAL)
-// ========================
+const generateRefreshToken = (user) => {
+  return jwt.sign({ id: user._id }, process.env.JWT_REFRESH_SECRET, {
+    expiresIn: "7d",
+  });
+};
+
 export const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { username, email, password } = req.body;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    // Validasi sederhana
-    if (!name || !email || !password) {
+    if (!username || !email || !password) {
       return res.status(400).json({ message: "Semua field wajib diisi." });
     }
 
-    // Cek email sudah ada atau belum
-    const existing = await User.findOne({ email });
-    if (existing) {
-      return res.status(409).json({ message: "Email sudah terdaftar." });
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: "Format email tidak valid." });
     }
 
-    // Hash password
-    const passwordHash = await bcrypt.hash(password, 10);
-
-    // Simpan user
-    const user = await User.create({
-      name,
-      email,
-      passwordHash,
-      provider: "local"
+    const existing = await User.findOne({
+      $or: [{ email }, { name: username }],
     });
 
-    const token = generateToken(user);
+    if (existing) {
+      if (existing.email === email) {
+        return res.status(409).json({ message: "Email sudah terdaftar." });
+      }
+      if (existing.name === username) {
+        return res.status(409).json({ message: "Username sudah digunakan." });
+      }
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    const user = await User.create({
+      name: username,
+      email,
+      passwordHash,
+      provider: "local",
+    });
 
     res.status(201).json({
       message: "Registrasi berhasil.",
-      token,
+      accessToken: generateToken(user),
+      refreshToken: generateRefreshToken(user),
+      expiresIn: 900,
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
         role: user.role,
-        avatar: user.avatar
-      }
+        avatar: user.avatar,
+      },
     });
-
   } catch (error) {
     console.error("REGISTER ERROR:", error);
     res.status(500).json({ message: "Terjadi kesalahan server." });
@@ -61,29 +72,29 @@ export const register = async (req, res) => {
 };
 
 
-// ========================
-// LOGIN (LOCAL)
-// ========================
+// login local
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
     // Cek input
-    if (!email || !password) {
-      return res.status(400).json({ message: "Email dan password wajib diisi." });
+    if (!username || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email dan password wajib diisi." });
     }
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ name: username });
 
     // Tidak ditemukan
     if (!user) {
-      return res.status(404).json({ message: "Email tidak ditemukan." });
+      return res.status(404).json({ message: "User tidak ditemukan." });
     }
 
     // Cek provider
     if (user.provider === "google") {
       return res.status(400).json({
-        message: "Akun ini menggunakan Google Sign-In. Gunakan login Google."
+        message: "Akun ini menggunakan Google Sign-In. Gunakan login Google.",
       });
     }
 
@@ -93,36 +104,33 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: "Password salah." });
     }
 
-    const token = generateToken(user);
-
     res.json({
       message: "Login berhasil.",
-      token,
+      accessToken: generateToken(user),
+      refreshToken: generateRefreshToken(user),
+      expiresIn: 900,
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
         role: user.role,
-        avatar: user.avatar
-      }
+        avatar: user.avatar,
+      },
     });
-
   } catch (error) {
     console.error("LOGIN ERROR:", error);
     res.status(500).json({ message: "Terjadi kesalahan server." });
   }
 };
 
-
-// ========================
-// GOOGLE LOGIN
-// ========================
 export const googleAuth = async (req, res) => {
   try {
     const { googleId, name, email, avatar } = req.body;
 
     if (!googleId || !email) {
-      return res.status(400).json({ message: "Google ID dan email diperlukan." });
+      return res
+        .status(400)
+        .json({ message: "Google ID dan email diperlukan." });
     }
 
     // Apakah user sudah pernah login Google?
@@ -136,7 +144,7 @@ export const googleAuth = async (req, res) => {
         googleId,
         avatar,
         provider: "google",
-        passwordHash: "google-oauth-no-password"
+        passwordHash: "google-oauth-no-password",
       });
     }
 
@@ -150,16 +158,14 @@ export const googleAuth = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
-        avatar: user.avatar
-      }
+        avatar: user.avatar,
+      },
     });
-
   } catch (error) {
     console.error("GOOGLE AUTH ERROR:", error);
     res.status(500).json({ message: "Terjadi kesalahan server." });
   }
 };
-
 
 // ========================
 // GET USER PROFILE (PROTECTED)

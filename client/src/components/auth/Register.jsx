@@ -4,10 +4,12 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import api from "../../api/axios";
 import { icons } from "../../assets/index.js";
+import { useUserStore } from "../../store.jsx";
 
 const Register = () => {
   const googleicon = icons.find((icon) => icon.name === "google");
   const [isSubmitting, setSubmitting] = useState(false);
+  const { setUser } = useUserStore();
 
   const handlesignUp = async (e) => {
     e.preventDefault();
@@ -49,13 +51,21 @@ const Register = () => {
         password,
       });
 
-      localStorage.setItem("accessToken", res.data.accessToken);
-      localStorage.setItem("refreshToken", res.data.refreshToken);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-
       if (!res.data?.accessToken) {
         throw new Error("token tidak ditemukan di response.");
       } else {
+        setUser({
+          refreshToken: res.data.refreshToken,
+          accessToken: res.data.accessToken,
+          user: {
+            id: res.data.user.id,
+            name: res.data.user.name,
+            email: res.data.user.email,
+            role: res.data.user.role,
+            avatar: res.data.user.avatar,
+          },
+        });
+
         window.location.href = "/";
       }
     } finally {

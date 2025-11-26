@@ -4,6 +4,7 @@ import { Title } from "react-head";
 import Swal from "sweetalert2";
 import api from "../../api/axios.js";
 import { Link } from "react-router-dom";
+import { useUserStore } from "../../store.jsx";
 
 const Login = () => {
   const googleicon = icons.find((icon) => icon.name === "google");
@@ -51,13 +52,20 @@ const Login = () => {
         password,
       });
 
-      localStorage.setItem("accessToken", res.data.accessToken);
-      localStorage.setItem("refreshToken", res.data.refreshToken);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-
       if (!res.data?.accessToken) {
         throw new Error("token tidak ditemukan di response.");
       } else {
+        useUserStore.getState().setUser({
+          refreshToken: res.data.refreshToken,
+          accessToken: res.data.accessToken,
+          user: res.data.user,
+        });
+      }
+
+      if(res.data.user.role === "admin"){
+        window.location.href = "/admin/dashboard";
+      }
+      else {
         window.location.href = "/";
       }
     } catch (err) {
@@ -87,7 +95,7 @@ const Login = () => {
               htmlFor="username"
               className="flex border border-gray-400 p-3 rounded gap-2 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-blue-500 focus-within:border-blue-500"
             >
-              <i class="bi bi-person-fill"></i>
+              <i className="bi bi-person-fill"></i>
               <input
                 type="text"
                 name="username"
@@ -100,7 +108,7 @@ const Login = () => {
               htmlFor="password"
               className="flex border border-gray-400 p-3 rounded gap-2 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-blue-500 focus-within:border-blue-500"
             >
-              <i class="bi bi-key-fill"></i>
+              <i className="bi bi-key-fill"></i>
               <input
                 type="password"
                 name="password"
