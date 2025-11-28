@@ -9,27 +9,27 @@ const categoriesNav = [
     {
         icon: "https://img.icons8.com/?size=100&id=36172&format=png&color=ffffff",
         name: "Health",
-        link: "#",
+        category: "kesehatan",
     },
     {
         icon: "https://img.icons8.com/?size=100&id=JMIXKPDzGWkw&format=png&color=ffffff",
         name: "Environment",
-        link: "#",
+        category: "lingkungan",
     },
     {
         icon: "https://img.icons8.com/?size=100&id=11225&format=png&color=ffffff",
         name: "Education",
-        link: "#",
+        category: "pendidikan",
     },
     {
         icon: "https://img.icons8.com/?size=100&id=ilGjDFCEpxw3&format=png&color=ffffff",
         name: "Elderly",
-        link: "#",
+        category: "sosial",
     },
     {
         icon: "https://img.icons8.com/?size=100&id=8625&format=png&color=ffffff",
         name: "Orphans",
-        link: "#",
+        category: "anak-yatim",
     },
 ];
 

@@ -38,25 +38,25 @@ const navbar = () => {
 
       <div className="flex flex-1 justify-center gap-10 text-lg">
         <NavLink
-          className={({ isActive }) => (isActive ? "underline" : "")}
+          className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
           to="/"
         >
           Home
         </NavLink>
         <NavLink
-          className={({ isActive }) => (isActive ? "underline" : "")}
+          className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
           to="/about"
         >
           About
         </NavLink>
-        <NavLink
-          className={({ isActive }) => (isActive ? "underline" : "")}
+        {/* <NavLink
+          className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
           to="/donations"
         >
           Donasi
-        </NavLink>
+        </NavLink> */}
         <NavLink
-          className={({ isActive }) => (isActive ? "underline" : "")}
+          className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
           to="/how-it-works"
         >
           Cara Kerja
