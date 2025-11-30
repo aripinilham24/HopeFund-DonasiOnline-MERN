@@ -4,6 +4,7 @@ import Slider from "../components/Slider";
 import { categoriesNav } from "../assets";
 import CampaignCard from "../components/CampaignCard";
 import { Title } from "react-head";
+import {url} from "../api/axios.js";
 
 const HomePage = () => {
   const [campaigns, setCampaigns] = useState([]);
@@ -12,7 +13,7 @@ const HomePage = () => {
     const getCampaigns = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/campaigns?category=${category}`
+          `${url}/api/campaigns?category=${category}`
         );
         setCampaigns(res.data.data);
       } catch (err) {
@@ -63,7 +64,7 @@ const HomePage = () => {
                   id={campaign._id}
                   title={campaign.title}
                   desc={campaign.shortDescription}
-                  img={`http://localhost:5000/uploads/image/campaign/${campaign.image}`}
+                  img={`${url}/uploads/image/campaign/${campaign.image}`}
                 />
               ))
             ) : (

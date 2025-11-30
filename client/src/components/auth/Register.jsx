@@ -2,7 +2,7 @@ import { Title } from "react-head";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import Swal from "sweetalert2";
-import api from "../../api/axios";
+import {api} from "../../api/axios";
 import { icons } from "../../assets/index.js";
 import { useUserStore } from "../../store.jsx";
 

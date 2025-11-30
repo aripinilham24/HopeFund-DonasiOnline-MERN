@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { BackButton } from "../components/Buttoon";
 import { Title } from "react-head";
+import {url} from "../api/axios.js";
 
 const DetailCampaign = () => {
     const { id } = useParams();
@@ -12,7 +13,7 @@ const DetailCampaign = () => {
         const getCampaign = async () => {
             try {
                 const res = await axios.get(
-                    `http://localhost:5000/api/campaigns/${id}`
+                    `${url}/api/campaigns/${id}`
                 );
                 setCampaign(res.data.campaign);
                 setDonor(res.data.transactions);
@@ -36,7 +37,7 @@ const DetailCampaign = () => {
                         <div className="m-5 p-5">
                             <img
                                 className="h-100 rounded shadow-lg mx-auto"
-                                src={`http://localhost:5000/uploads/image/campaign/${campaign.image}`}
+                                src={`${url}/uploads/image/campaign/${campaign.image}`}
                                 alt={campaign.title}
                             />
                         </div>
@@ -93,8 +94,8 @@ const DetailCampaign = () => {
 
                                         const avatar =
                                             donor.user && donor.user.avatar
-                                                ? `http://localhost:5000/uploads/image/profile/${donor.user.avatar}`
-                                                : "http://localhost:5000/uploads/image/profile/user.jpg";
+                                                ? `${url}/uploads/image/profile/${donor.user.avatar}`
+                                                : `${url}/uploads/image/profile/user.jpg`;
 
                                         return (
                                             <div

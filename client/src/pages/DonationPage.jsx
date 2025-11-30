@@ -4,6 +4,7 @@ import axios from "axios";
 import { BackButton } from "../components/Buttoon";
 import { Title } from "react-head";
 import Swal from "sweetalert2";
+import {url} from "../api/axios.js";
 
 function DonationPage() {
     const { id } = useParams();
@@ -22,7 +23,7 @@ function DonationPage() {
         const fetchClientKey = async () => {
             try {
                 const res = await axios.get(
-                    "http://localhost:5000/api/payment/config"
+                    `${url}/api/payment/config`
                 );
                 setClientKey(res.data.clientKey);
             } catch (err) {
@@ -48,7 +49,7 @@ function DonationPage() {
         const fetchCampaign = async () => {
             try {
                 const res = await axios.get(
-                    `http://localhost:5000/api/campaigns/title/${id}`
+                    `${url}/api/campaigns/title/${id}`
                 );
                 setCampaign(res.data.data.title);
             } catch (err) {
@@ -86,7 +87,7 @@ function DonationPage() {
         setLoading(true);
         try {
             const resp = await axios.post(
-                `http://localhost:5000/api/payment/create`,
+                `${url}/api/payment/create`,
                 {
                     donateId: `donate-${Date.now()}`,
                     amount: Number(amount),

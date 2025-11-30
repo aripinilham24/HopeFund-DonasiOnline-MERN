@@ -1,5 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { useUserStore } from "../store.jsx";
+import {url} from "../api/axios.js";
 
 const navbar = () => {
   const { user, clearUser } = useUserStore();
@@ -69,7 +70,7 @@ const navbar = () => {
             <span className="text-lg text-white">{user.name}</span>
             <div>
               <img
-                src={`http://localhost:5000/uploads/image/profile/${user.avatar}`}
+                src={`${url}/uploads/image/profile/${user.avatar}`}
                 className="w-10 rounded-full"
                 alt="profile"
               />

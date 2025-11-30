@@ -1,17 +1,14 @@
 import axios from "axios";
 
-let url = "localhost:5000/api"
-
-if(process.env.MODE === "PRODUCTION") {
-    url = "hopefund-be-production.up.railway.app/api"
-}
+let url = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 const api = axios.create({
-    baseURL: url,
+    baseURL: `${url}/api/`,
     withCredentials: true,
     headers: {
         "Content-Type": "application/json",
     },
 });
 
-export default api;
+
+export {api, url}
