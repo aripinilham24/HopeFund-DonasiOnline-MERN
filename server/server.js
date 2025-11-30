@@ -19,7 +19,7 @@ app.use(
 );
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://hopefund.vercel.app"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -27,13 +27,21 @@ app.use(
 );
 app.use(express.json());
 
-await connectDB();
+const startServer = async () => {
+  try {
+    await connectDB();
 
-app.use("/api/campaigns", campaignRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/payment", donateRoutes);
+    app.use("/api/campaigns", campaignRoutes);
+    app.use("/api/auth", authRoutes);
+    app.use("/api/payment", donateRoutes);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () =>
-  console.log(`\n\nServer running on http://localhost:${PORT}`)
-);
+    const PORT = process.env.PORT || 5000;
+    app.listen(PORT, () =>
+      console.log(`\n\nServer running on http://localhost:${PORT}`)
+    );
+  } catch (err) {
+    console.error("gagal memmulai server:", err.message);
+  }
+};
+
+startServer();
