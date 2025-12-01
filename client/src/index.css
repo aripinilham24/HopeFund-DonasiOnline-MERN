@@ -10,7 +10,7 @@ html, body {
 }
 
 main {
-  @apply min-h-screen text-gray-950 p-10;
+  @apply min-h-screen text-gray-950 p-5 lg:p-10;
 }
 
 @layer utilities {

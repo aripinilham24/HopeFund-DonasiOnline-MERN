@@ -26,7 +26,7 @@ const HomePage = () => {
   return (
     <>
       <Title>HopeFund | Situs donasi online</Title>
-      <section className="min-h-screen text-gray-950 pt-10 lg:p-10">
+      <section className="min-h-screen text-gray-950 pt-10 lg:p-10 text-xs lg:text-lg">
         <Slider />
 
         <div className="categories-bar flex justify-evenly items-center flex-wrap gap-3 p-5 bg-linear-65 from-blue-500 to-blue-300 rounded shadow-lg mt-15">

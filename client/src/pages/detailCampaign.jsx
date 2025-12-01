@@ -29,14 +29,14 @@ const DetailCampaign = () => {
             <Title>{`${
                 campaign ? `HopeFund | ${campaign.title}` : "Loading..."
             }`}</Title>
-            <section className="text-dark mt-10 grid grid-cols-1 justify-center">
-                <BackButton className="absolute top-20 left-5" />
+            <section className="text-dark mt-10 grid grid-cols-1 justify-center text-xs lg:text-lg">
+                <BackButton className="absolute top-18 left-1 lg:top-20 lg:left-5" />
 
                 {campaign ? (
                     <div className="campaign-detail mx-auto">
                         <div className="m-5 p-5">
                             <img
-                                className="h-100 rounded shadow-lg mx-auto"
+                                className="h-50 lg:h-100 rounded shadow-lg mx-auto object-cover"
                                 src={`${url}/uploads/image/campaign/${campaign.image}`}
                                 alt={campaign.title}
                             />
@@ -52,7 +52,7 @@ const DetailCampaign = () => {
                                 <span className="font-bold">
                                     🙍 {donor ? donor.length : 0} Donatur
                                 </span>
-                                <a href="#" className="btn">
+                                <a href="#" className="btn hidden">
                                     Share
                                 </a>
                             </div>
@@ -100,12 +100,12 @@ const DetailCampaign = () => {
                                         return (
                                             <div
                                                 key={i}
-                                                className="flex gap-5 items-center border p-5 rounded text-grey-600"
+                                                className="flex gap-5 items-center border p-2 lg:p-5 rounded text-grey-600"
                                             >
                                                 <img
                                                     src={avatar}
                                                     alt={name}
-                                                    className="h-15 rounded-full"
+                                                    className="h-10 lg:h-15 rounded-full object-cover"
                                                 />
                                                 <div className="flex flex-col">
                                                     <span className="font-bold">
@@ -128,7 +128,7 @@ const DetailCampaign = () => {
                             href={`/donation/${id}`}
                             className="btn btn-outline btn-primary w-full"
                         >
-                            Donate Now
+                            Donasi Sekarang
                         </a>
                     </div>
                 ) : (

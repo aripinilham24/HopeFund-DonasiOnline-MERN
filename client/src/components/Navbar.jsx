@@ -72,7 +72,7 @@ const navbar = () => {
         </NavLink>
       </div>
       {/* nav link mobile */}
-      <div className={`absolute top-18 rounded bg-gradient flex flex-col w-xs gap-5 p-5 font-bold ${openNav?"hidden":"block"} lg:hidden`}>
+      <div className={`absolute top-18 rounded bg-gradient flex flex-col w-xs gap-5 p-5 font-bold ${openNav?"block":"hidden"} lg:hidden`}>
         <NavLink
           className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
           to="/"
