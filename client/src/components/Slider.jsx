@@ -14,7 +14,7 @@ const Slider = () => {
             pagination={{ clickable: true }}
             loop={true}
             autoplay={{ delay: 3000 }}
-            className="shadow-xl"
+            className="shadow-xl mt-5"
             >
             <SwiperSlide>
                 <img

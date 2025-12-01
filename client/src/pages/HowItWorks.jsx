@@ -20,6 +20,7 @@ import {Title} from "react-head";
 
 export default function HowItWorks() {
   const [activeTab, setActiveTab] = useState('donatur');
+  const mobile = window.innerWidth < 640;
 
   const donaturSteps = [
     {
@@ -140,9 +141,9 @@ export default function HowItWorks() {
   return (
    <>
    <Title>Cara Kerja</Title>
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 mt-15">
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-green-600 to-blue-600 text-white py-20 overflow-hidden">
+      <div className="relative bg-gradient-to-r from-green-600 to-blue-600 text-white py-20 overflow-hidden rounded-t">
         <div className="absolute inset-0 bg-black opacity-10"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
@@ -164,7 +165,7 @@ export default function HowItWorks() {
         <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl p-2 flex">
           <button
             onClick={() => setActiveTab('donatur')}
-            className={`flex-1 py-4 px-6 rounded-xl font-semibold transition-all ${
+            className={`flex-1 text-xs lg:text-lg py-4 px-6 rounded-xl font-semibold transition-all ${
               activeTab === 'donatur'
                 ? 'bg-gradient-to-r from-green-600 to-blue-600 text-white shadow-lg'
                 : 'text-gray-600 hover:bg-gray-100'
@@ -174,7 +175,7 @@ export default function HowItWorks() {
           </button>
           <button
             onClick={() => setActiveTab('penggalang')}
-            className={`flex-1 py-4 px-6 rounded-xl font-semibold transition-all ${
+            className={`flex-1 text-xs lg:text-lg py-4 px-6 rounded-xl font-semibold transition-all ${
               activeTab === 'penggalang'
                 ? 'bg-gradient-to-r from-green-600 to-blue-600 text-white shadow-lg'
                 : 'text-gray-600 hover:bg-gray-100'
@@ -199,7 +200,7 @@ export default function HowItWorks() {
             {(activeTab === 'donatur' ? donaturSteps : penggalangSteps).map((step, index) => {
               const Icon = step.icon;
               return (
-                <div key={index} className="flex gap-6 items-start group">
+                <div key={index} className="flex flex-col lg:flex-row justify-center items-center gap-6 lg:items-start group">
                   <div className="flex-shrink-0">
                     <div className={`w-16 h-16 bg-gradient-to-br ${step.color} rounded-2xl flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform`}>
                       <Icon className="w-8 h-8 text-white" />
@@ -213,8 +214,12 @@ export default function HowItWorks() {
                     <p className="text-gray-600 leading-relaxed">{step.description}</p>
                   </div>
                   {index < (activeTab === 'donatur' ? donaturSteps : penggalangSteps).length - 1 && (
-                    <div className="flex-shrink-0 ml-8 mt-8">
-                      <ArrowRight className="w-6 h-6 text-gray-300" />
+                    <div className="flex-shrink-0 lg:ml-8 mt-8">
+                      {mobile? (
+                        <ArrowRight className="w-6 h-6 text-gray-400 transform rotate-90 lg:rotate-0" />
+                      ) : (
+                        <ArrowRight className="w-6 h-6 text-gray-400" />
+                      )}
                     </div>
                   )}
                 </div>

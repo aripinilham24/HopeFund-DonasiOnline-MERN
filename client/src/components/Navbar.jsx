@@ -9,7 +9,6 @@ const navbar = () => {
 
   const toggleNav = () => {
     setOpenNav(!openNav);
-    console.log("openNav", openNav);
   };
 
   const handleLogout = () => {

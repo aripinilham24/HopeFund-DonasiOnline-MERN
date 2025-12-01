@@ -58,9 +58,9 @@ export default function About() {
   return (
     <>
     <Title>About</Title>
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50 mt-15">
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-green-600 to-blue-600 text-white py-20 overflow-hidden">
+      <div className="relative bg-gradient-to-r from-green-600 to-blue-600 text-white py-20 overflow-hidden rounded-t">
         <div className="absolute inset-0 bg-black opacity-10"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
@@ -86,7 +86,7 @@ export default function About() {
             return (
               <div key={index} className="bg-white rounded-2xl shadow-lg p-6 text-center transform hover:scale-105 transition-transform">
                 <Icon className="w-10 h-10 mx-auto mb-3 text-green-600" />
-                <div className="text-3xl font-bold text-gray-800 mb-1">{stat.value}</div>
+                <div className="text-2xl lg:text-3xl font-bold text-gray-800 mb-1">{stat.value}</div>
                 <div className="text-gray-600 text-sm">{stat.label}</div>
               </div>
             );
@@ -146,7 +146,7 @@ export default function About() {
       </div>
 
       {/* Team Section */}
-      <div className="container mx-auto px-4 py-20">
+      {/* <div className="container mx-auto px-4 py-20">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-gray-800 mb-4">Tim Kami</h2>
           <div className="w-20 h-1 bg-gradient-to-r from-green-600 to-blue-600 mx-auto mb-4"></div>
@@ -174,10 +174,10 @@ export default function About() {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
 
       {/* CTA Section */}
-      <div className="bg-gradient-to-r from-green-600 to-blue-600 text-white py-16">
+      <div className="bg-gradient-to-r from-green-600 to-blue-600 text-white py-16 rounded">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Siap Berbagi Kebaikan?
