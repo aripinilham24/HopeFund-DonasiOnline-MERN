@@ -18,21 +18,21 @@ const Slider = () => {
             >
             <SwiperSlide>
                 <img
-                className="h-60 w-full object-cover rounded"
+                className="h-30 lg:h-60 w-full object-cover rounded"
                     src={`${url}/uploads/image/slide-banner/foto_presisi_1.png`}
                     alt="slide-1"
                 />
             </SwiperSlide>
             <SwiperSlide>
                 <img
-                className="h-60 w-full object-cover rounded"
+                className="h-30 lg:h-60 w-full object-cover rounded"
                     src={`${url}/uploads/image/slide-banner/foto_presisi_2.png`}
                     alt="slide-2"
                 />
             </SwiperSlide>
             <SwiperSlide>
                 <img
-                className="h-60 w-full object-cover rounded"
+                className="h-30 lg:h-60 w-full object-cover rounded"
                     src={`${url}/uploads/image/slide-banner/foto_presisi_3.png`}
                     alt="slide-3"
                 />

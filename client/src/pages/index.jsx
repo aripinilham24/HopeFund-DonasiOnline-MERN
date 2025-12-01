@@ -26,7 +26,7 @@ const HomePage = () => {
   return (
     <>
       <Title>HopeFund | Situs donasi online</Title>
-      <section className="min-h-screen text-gray-950 p-10">
+      <section className="min-h-screen text-gray-950 pt-10 lg:p-10">
         <Slider />
 
         <div className="categories-bar flex justify-evenly items-center flex-wrap gap-3 p-5 bg-linear-65 from-blue-500 to-blue-300 rounded shadow-lg mt-15">
@@ -37,11 +37,11 @@ const HomePage = () => {
               key={index}
             >
               <img
-                className="h-7 lg:h-10"
+                className="h-5 lg:h-10"
                 src={category.icon}
                 alt={category.name}
               />
-              <h1 className="text-center text-white">{category.name}</h1>
+              <h1 className="hidden lg:block text-xs lg:text-lg text-center text-white">{category.name}</h1>
             </a>
           ))}
         </div>
@@ -56,7 +56,7 @@ const HomePage = () => {
             <h1 className="text-white">Daftar Campaign</h1>
           </div>
 
-          <div className="campaigns-list mt-10 flex flex-wrap gap-2 justify-center">
+          <div className="campaigns-list mt-10 flex flex-wrap gap-5 justify-center">
             {campaigns.length > 0 ? (
               campaigns.map((campaign, index) => (
                 <CampaignCard

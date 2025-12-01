@@ -1,9 +1,17 @@
 import { Link, NavLink } from "react-router-dom";
 import { useUserStore } from "../store.jsx";
 import {url} from "../api/axios.js";
+import { useState } from "react";
 
 const navbar = () => {
   const { user, clearUser } = useUserStore();
+  const [openNav, setOpenNav] = useState(false);
+
+  const toggleNav = () => {
+    setOpenNav(!openNav);
+    console.log("openNav", openNav);
+  };
+
   const handleLogout = () => {
     clearUser();
     window.location.href = `/login`;
@@ -11,7 +19,7 @@ const navbar = () => {
   return (
     <nav className="navbar bg-linear-65 from-blue-500 to-blue-300 shadow-xl flex justify-between">
       <div className="flex-none lg:hidden">
-        <button className="btn btn-square btn-ghost">
+        <button onClick={toggleNav} className="btn btn-square btn-ghost">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -36,8 +44,35 @@ const navbar = () => {
           HopeFund
         </a>
       </div>
-
-      <div className="flex flex-1 justify-center gap-10 text-lg">
+      {/* nav link desktop */}
+      <div className="justify-center gap-10 text-lg hidden lg:flex">
+        <NavLink
+          className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
+          to="/"
+        >
+          Home
+        </NavLink>
+        <NavLink
+          className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
+          to="/about"
+        >
+          About
+        </NavLink>
+        {/* <NavLink
+          className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
+          to="/donations"
+        >
+          Donasi
+        </NavLink> */}
+        <NavLink
+          className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
+          to="/how-it-works"
+        >
+          Cara Kerja
+        </NavLink>
+      </div>
+      {/* nav link mobile */}
+      <div className={`absolute top-18 rounded bg-gradient flex flex-col w-xs gap-5 p-5 font-bold ${openNav?"hidden":"block"} lg:hidden`}>
         <NavLink
           className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
           to="/"
