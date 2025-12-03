@@ -36,12 +36,12 @@ const navbar = () => {
         </button>
       </div>
       <div className="rounded">
-        <a
+        <Link
           className="btn btn-ghost text-xl hover:bg-blue-500 hover:border-none"
-          href="/"
+          to="/"
         >
           HopeFund
-        </a>
+        </Link>
       </div>
       {/* nav link desktop */}
       <div className="justify-center gap-10 text-lg hidden lg:flex">
@@ -57,12 +57,12 @@ const navbar = () => {
         >
           About
         </NavLink>
-        {/* <NavLink
+        <NavLink
           className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
-          to="/donations"
+          to="/create-donation"
         >
-          Donasi
-        </NavLink> */}
+          Buat Campaign
+        </NavLink>
         <NavLink
           className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
           to="/how-it-works"
@@ -84,34 +84,38 @@ const navbar = () => {
         >
           About
         </NavLink>
-        {/* <NavLink
+        <NavLink
           className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
-          to="/donations"
+          to="/create-donation"
         >
-          Donasi
-        </NavLink> */}
+          Buat Campaign
+        </NavLink>
         <NavLink
           className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
           to="/how-it-works"
         >
           Cara Kerja
         </NavLink>
+
+        <button onClick={handleLogout} className="btn btn-secondary">
+              Logout
+            </button>
       </div>
 
       {user?.id ? (
         <div className="flex gap-4 items-center">
           <div className="flex items-center gap-2">
-            <span className="text-lg text-white">{user.name}</span>
+            <span className="text-sm lg:text-lg text-white">{user.name}</span>
             <div>
               <img
                 src={`${url}/uploads/image/profile/${user.avatar}`}
-                className="w-10 rounded-full"
+                className="w-8 lg:w-10 rounded-full"
                 alt="profile"
               />
             </div>
           </div>
           <div>
-            <button onClick={handleLogout} className="btn btn-secondary">
+            <button onClick={handleLogout} className="btn btn-secondary hidden lg:block">
               Logout
             </button>
           </div>
