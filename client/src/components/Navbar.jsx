@@ -7,6 +7,11 @@ const navbar = () => {
   const { user, clearUser } = useUserStore();
   const [openNav, setOpenNav] = useState(false);
 
+  let login = false;
+  if (user?.id) {
+    login = true;
+  }
+
   const toggleNav = () => {
     setOpenNav(!openNav);
   };
@@ -97,7 +102,7 @@ const navbar = () => {
           Cara Kerja
         </NavLink>
 
-        <button onClick={handleLogout} className="btn btn-secondary">
+        <button onClick={handleLogout} className={`${login?"block": "hidden"} btn btn-secondary`}>
               Logout
             </button>
       </div>
