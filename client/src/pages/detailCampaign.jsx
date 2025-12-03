@@ -4,6 +4,7 @@ import axios from "axios";
 import { BackButton } from "../components/Buttoon";
 import { Title } from "react-head";
 import {url} from "../api/axios.js";
+import { rupiahFormatter } from "../utils/utils.js";
 
 const DetailCampaign = () => {
     const { id } = useParams();
@@ -58,18 +59,24 @@ const DetailCampaign = () => {
                             </div>
                             <div className="nominal-info text-blue-400 flex justify-between">
                                 <span>
-                                    Terkumpul: Rp {campaign.amountRaised}
+                                    Terkumpul: {rupiahFormatter(campaign.amountRaised)}
                                 </span>
                                 <span>
-                                    Kurang: Rp{" "}
-                                    {campaign.targetAmount -
-                                        campaign.amountRaised}
+                                    Kurang: {rupiahFormatter((campaign?.targetAmount ?? 0) - (campaign?.amountRaised ?? 0))}
                                 </span>
                             </div>
                         </div>
                         <div className="m-5 shadow-lg p-5">
                             <h3 className="font-bold">Description</h3>
                             <p>{campaign.description}</p>
+                        </div>
+                        <div className="p-5">
+                             <a
+                            href={`/donation/${id}`}
+                            className="btn btn-outline btn-primary w-full"
+                        >
+                            Donasi Sekarang
+                        </a>
                         </div>
                         <div className="m-5 shadow-lg p-5">
                             <h3 className="font-bold">Donatur</h3>
@@ -112,7 +119,7 @@ const DetailCampaign = () => {
                                                         {name}
                                                     </span>
                                                     <span>
-                                                        Rp {donor.amount}
+                                                         {rupiahFormatter(donor.amount)}
                                                     </span>
                                                     <p>{donor.message}</p>
                                                 </div>
@@ -124,12 +131,7 @@ const DetailCampaign = () => {
                                 )}
                             </div>
                         </div>
-                        <a
-                            href={`/donation/${id}`}
-                            className="btn btn-outline btn-primary w-full"
-                        >
-                            Donasi Sekarang
-                        </a>
+                       
                     </div>
                 ) : (
                     <p>Campaign not found.</p>
