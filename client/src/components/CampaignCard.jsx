@@ -13,7 +13,7 @@ const CampaignCard = ({title, desc, img, id}) => {
     <h2 className="card-title">{title}</h2>
     <p>{desc}</p>
     <div className="card-actions justify-end">
-      <Link to={`/detailcampaign/${id}`} className="btn btn-primary">Donate Now</Link>
+      <Link to={`/detailcampaign/${id}`} className="btn btn-primary">Donasi Sekarang</Link>
     </div>
   </div>
 </div>
