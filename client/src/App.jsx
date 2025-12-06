@@ -12,6 +12,7 @@ import About from "./pages/About.jsx";
 import HowItWorks from "./pages/HowItWorks.jsx";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import CreateDonation from "./pages/CreateDonation.jsx";
+import UpdateCampaign from "./pages/UpdateCampaign.jsx";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<About />} />
               <Route path="/create-donation" element={<CreateDonation />} />
+              <Route path="/updateCampaign/:id" element={<UpdateCampaign />} />
               <Route path="/how-it-works" element={<HowItWorks />} />
               <Route path="/detailcampaign/:id" element={<DetailCampaign />} />
               <Route path="/donation/:id" element={<DonationPage />} />

@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { useUserStore } from "../store.jsx";
-import {url} from "../api/axios.js";
+import { url } from "../api/axios.js";
 import { useState } from "react";
 
 const navbar = () => {
@@ -51,60 +51,92 @@ const navbar = () => {
       {/* nav link desktop */}
       <div className="justify-center gap-10 text-lg hidden lg:flex">
         <NavLink
-          className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
+          className={({ isActive }) =>
+            (isActive ? "underline" : "") + " hover:underline"
+          }
           to="/"
         >
           Home
         </NavLink>
         <NavLink
-          className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
+          className={({ isActive }) =>
+            (isActive ? "underline" : "") + " hover:underline"
+          }
           to="/about"
         >
           About
         </NavLink>
         <NavLink
-          className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
+          className={({ isActive }) =>
+            (isActive ? "underline" : "") + " hover:underline"
+          }
           to="/create-donation"
         >
           Buat Campaign
         </NavLink>
         <NavLink
-          className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
+          className={({ isActive }) =>
+            (isActive ? "underline" : "") + " hover:underline"
+          }
           to="/how-it-works"
         >
           Cara Kerja
         </NavLink>
       </div>
+
+      {/* backdrop */}
+      {openNav && (
+        <div
+          className="fixed inset-0 bg-black/10 z-40"
+          onClick={toggleNav} // ❗ klik backdrop → nav hilang
+        />
+      )}
+
       {/* nav link mobile */}
-      <div className={`absolute top-18 rounded bg-gradient flex flex-col w-xs gap-5 p-5 font-bold ${openNav?"block":"hidden"} lg:hidden`}>
+      <div
+        className={`absolute z-41 top-18 rounded bg-gradient flex flex-col w-xs gap-5 p-5 font-bold ${
+          openNav ? "block" : "hidden"
+        } lg:hidden`}
+      >
         <NavLink
-          className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
+          className={({ isActive }) =>
+            (isActive ? "underline" : "") + " hover:underline"
+          }
           to="/"
         >
           Home
         </NavLink>
         <NavLink
-          className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
+          className={({ isActive }) =>
+            (isActive ? "underline" : "") + " hover:underline"
+          }
           to="/about"
         >
           About
         </NavLink>
         <NavLink
-          className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
+          className={({ isActive }) =>
+            (isActive ? "underline" : "") + " hover:underline"
+          }
           to="/create-donation"
         >
           Buat Campaign
         </NavLink>
         <NavLink
-          className={({ isActive }) => (isActive ? "underline" : "") + " hover:underline"}
+          className={({ isActive }) =>
+            (isActive ? "underline" : "") + " hover:underline"
+          }
           to="/how-it-works"
         >
           Cara Kerja
         </NavLink>
 
-        <button onClick={handleLogout} className={`${login?"block": "hidden"} btn btn-secondary`}>
-              Logout
-            </button>
+        <button
+          onClick={handleLogout}
+          className={`${login ? "block" : "hidden"} btn btn-secondary`}
+        >
+          Logout
+        </button>
       </div>
 
       {user?.id ? (
@@ -120,7 +152,10 @@ const navbar = () => {
             </div>
           </div>
           <div>
-            <button onClick={handleLogout} className="btn btn-secondary hidden lg:block">
+            <button
+              onClick={handleLogout}
+              className="btn btn-secondary hidden lg:block"
+            >
               Logout
             </button>
           </div>

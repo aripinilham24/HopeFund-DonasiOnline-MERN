@@ -1,6 +1,6 @@
 import { Title } from "react-head";
-import { api } from "../api/axios";
-import { useState } from "react";
+import { api, url } from "../api/axios";
+import { useState, useEffect } from "react";
 import { useUserStore } from "../store";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
@@ -9,14 +9,44 @@ const CreateDonation = () => {
   const [preview, setPreview] = useState(null);
   const [submiting, setSubmiting] = useState(false);
   const { user } = useUserStore();
+  const [campaigns, setCampaigns] = useState([]);
+  const [refresh, setRefresh] = useState(false);
 
-  let login = false;
-  if (user?.id) {
-    login = true;
-  }
+  const login = Boolean(user?.id);
+
   const handleImage = (e) => {
     const file = e.target.files[0];
     setPreview(URL.createObjectURL(file));
+  };
+
+  const handleDelete = async (id, e) => {
+    e.preventDefault();
+    Swal.fire({
+      icon: "warning",
+      title: "Hapus Campaign",
+      text: "apakah kamu yakin ingin menghapus campaign ini?",
+      showCancelButton: true,
+      confirmButtonText: "Hapus",
+      cancelButtonText: "Batal",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const res = await api.delete(`campaigns/${id}`);
+          Swal.fire({
+            icon: "success",
+            title: "Berhasil",
+            text: "Campaign berhasil dihapus.",
+          });
+          setRefresh(!refresh);
+        } catch (err) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Terjadi kesalahan saat menghapus campaign.",
+          });
+        }
+      }
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -32,6 +62,7 @@ const CreateDonation = () => {
     formData.append("targetAmount", e.target["target-dana"].value);
     formData.append("category", e.target.category.value);
     formData.append("image", e.target["image-campaign"].files[0]);
+    formData.append("creatorId", user.id);
 
     try {
       const res = await api.post("/campaigns/create", formData, {
@@ -49,6 +80,7 @@ const CreateDonation = () => {
       });
       e.target.reset();
       setPreview(null);
+      setRefresh(!refresh);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -61,12 +93,116 @@ const CreateDonation = () => {
       setSubmiting(false);
     }
   };
+
+  useEffect(() => {
+    if (!login) return;
+    const fetchCampaigns = async () => {
+      try {
+        const res = await api.get(`campaigns/creator/${user.id}`);
+        setCampaigns(res.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchCampaigns();
+  }, [user.id, refresh]);
   return (
     <>
       <Title>Buat Campaign</Title>
 
       {login ? (
         <div className={`mt-25 lg:mt-10 ${login ? `block` : `hidden`}`}>
+          <div className="bg-white mt-10 shadow-lg p-5">
+            <h1 className="text-center text-xl font-semibold mb-10">
+              Campaign Anda
+            </h1>
+            {campaigns.length === 0 && <p>Anda belum membuat campaign.</p>}
+            {campaigns.length > 0 && (
+              <div className="overflow-x-auto shadow-lg rounded-lg">
+                <table className="w-full bg-white">
+                  <thead>
+                    <tr className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+                      <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">
+                        Gambar
+                      </th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">
+                        Judul
+                      </th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">
+                        Deskripsi
+                      </th>
+                      <th className="px-6 py-4 text-left text-sm font-semibold uppercase tracking-wider">
+                        Detail
+                      </th>
+                      <th className="px-6 py-4 text-center text-sm font-semibold uppercase tracking-wider">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {campaigns.map((campaign, index) => {
+                      return (
+                        <tr
+                          key={campaign._id}
+                          className={`hover:bg-gray-50 transition-colors ${
+                            index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                          }`}
+                        >
+                          <td className="px-6 py-4">
+                            <div className="flex items-center justify-start">
+                              <img
+                                src={`${url}/uploads/image/campaign/${campaign.image}`}
+                                alt="gambar_donasi"
+                                className="h-16 w-24 object-cover rounded-md shadow-sm border border-gray-200"
+                              />
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="text-sm font-medium text-gray-900 line-clamp-2">
+                              {campaign.title}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="text-sm text-gray-600 line-clamp-2 max-w-xs">
+                              {campaign.shortDescription}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="text-sm text-gray-600 line-clamp-3 max-w-md">
+                              {campaign.description}
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <div className="flex gap-2 items-center justify-center">
+                              <Link
+                                to={`/detailcampaign/${campaign._id}`}
+                                className="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-sm"
+                              >
+                                Lihat
+                              </Link>
+                              <Link
+                                to={`/updateCampaign/${campaign._id}`}
+                                className="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-amber-500 hover:bg-amber-600 rounded-lg transition-colors shadow-sm"
+                              >
+                                Edit
+                              </Link>
+                              <button
+                                onClick={(e) => handleDelete(campaign._id, e)}
+                                className="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors shadow-sm"
+                              >
+                                Hapus
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
           <form
             onSubmit={handleSubmit}
             className="bg-white shadow-lg rounded-lg p-6 sm:p-8"
