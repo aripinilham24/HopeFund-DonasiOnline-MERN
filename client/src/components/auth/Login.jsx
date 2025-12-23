@@ -2,9 +2,10 @@ import { icons } from "../../assets/index.js";
 import { useState } from "react";
 import { Title } from "react-head";
 import Swal from "sweetalert2";
-import {api} from "../../api/axios.js";
+import { api } from "../../api/axios.js";
 import { Link } from "react-router-dom";
 import { useUserStore } from "../../store.jsx";
+import { showAlert } from "./alert.js";
 
 const Login = () => {
   const googleicon = icons.find((icon) => icon.name === "google");
@@ -62,10 +63,9 @@ const Login = () => {
         });
       }
 
-      if(res.data.user.role === "admin"){
+      if (res.data.user.role === "admin") {
         window.location.href = "/admin/dashboard";
-      }
-      else {
+      } else {
         window.location.href = "/";
       }
     } catch (err) {
@@ -128,6 +128,7 @@ const Login = () => {
             <a
               className="btn btn-soft border-none bg-light text-dark hover:shadow-none hover:bg-gray-300"
               href="#googlelogin"
+              onClick={() => showAlert()}
             >
               <img
                 className="h-6"

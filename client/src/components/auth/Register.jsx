@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import {api} from "../../api/axios";
 import { icons } from "../../assets/index.js";
 import { useUserStore } from "../../store.jsx";
+import { showAlert } from "./alert.js";
 
 const Register = () => {
   const googleicon = icons.find((icon) => icon.name === "google");
@@ -136,6 +137,7 @@ const Register = () => {
             <a
               className="btn btn-soft border-none bg-light text-dark hover:shadow-none hover:bg-gray-300"
               href="#googlelogin"
+              onClick={() => showAlert()}
             >
               <img
                 className="h-6"

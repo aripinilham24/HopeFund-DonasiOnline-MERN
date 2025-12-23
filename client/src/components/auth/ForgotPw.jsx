@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import {api} from "../../api/axios";
+import { showAlert } from "./alert.js";
 
 const ForgotPw = () => {
   const [email, setEmail] = useState("");
@@ -143,7 +144,8 @@ const ForgotPw = () => {
 
           {/* Step 1: Email */}
           {step === "email" && (
-            <form onSubmit={handleSendEmail}>
+            // <form onSubmit={handleSendEmail}>
+            <form>
               <div className="mb-4">
                 <div className="p-3 flex gap-2 border rounded border-gray-400 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-blue-500 focus-within:border-blue-500">
                   <i className="bi bi-envelope-fill"></i>
@@ -152,15 +154,16 @@ const ForgotPw = () => {
                     placeholder="Masukkan email Anda"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    required
+                    // required
                     className="w-full outline-none"
                   />
                 </div>
               </div>
 
               <button
-                type="submit"
+                // type="submit"
                 disabled={isSubmitting}
+                onClick={()=>showAlert()}
                 className="btn bg-gradient border-none bg-gradient-hover transition-all duration-300 w-full"
               >
                 {isSubmitting ? "Mengirim..." : "Kirim Kode OTP"}

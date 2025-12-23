@@ -9,6 +9,12 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 dotenv.config();
+
+let url = "http://localhost:5173";
+if(process.env.MODE === "PRODUCTION") {
+  url = process.env.URL_FE;
+}
+
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,9 +23,10 @@ app.use(
   "/uploads/image/",
   express.static(path.join(__dirname, "./uploads/image/"))
 );
+
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://hopefund.vercel.app"],
+    origin: url,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -27,21 +34,13 @@ app.use(
 );
 app.use(express.json());
 
-const startServer = async () => {
-  try {
-    await connectDB();
+await connectDB();
 
-    app.use("/api/campaigns", campaignRoutes);
-    app.use("/api/auth", authRoutes);
-    app.use("/api/payment", donateRoutes);
+app.use("/api/campaigns", campaignRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/payment", donateRoutes);
 
-    const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () =>
-      console.log(`\n\nServer running on http://localhost:${PORT}`)
-    );
-  } catch (err) {
-    console.error("gagal memmulai server:", err.message);
-  }
-};
-
-startServer();
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () =>
+  console.log(`\n\nServer running on http://localhost:${PORT}`)
+);
