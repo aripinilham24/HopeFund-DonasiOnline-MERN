@@ -16,8 +16,11 @@ client/dist/
 client/build/
 client/.next/
 client/.nuxt/
-client/.env
+client/.env*
 
 # ===== Editor/IDE =====
 .vscode/
 .idea/
+
+AGENTS.md
+PLAN.md
