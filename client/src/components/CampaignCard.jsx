@@ -1,22 +1,26 @@
 import { Link } from 'react-router-dom';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
-const CampaignCard = ({title, desc, img, id}) => {
+const CampaignCard = ({ title, desc, img, id }) => {
   return (
-<div className="card bg-white w-94 shadow-lg">
-  <figure>
-    <img
-      src={img}
-      alt={title}
-      className="w-100 h-50 object-cover"/>
-  </figure>
-  <div className="card-body">
-    <h2 className="card-title">{title}</h2>
-    <p>{desc}</p>
-    <div className="card-actions justify-end">
-      <Link to={`/detailcampaign/${id}`} className="btn btn-primary">Donasi Sekarang</Link>
-    </div>
-  </div>
-</div>
+    <Card className="w-94 overflow-hidden">
+      <div className="h-50 overflow-hidden">
+        <img
+          src={img}
+          alt={title}
+          className="w-full h-full object-cover" />
+      </div>
+      <CardContent className="flex flex-col gap-3 p-5">
+        <h2 className="font-semibold text-lg">{title}</h2>
+        <p className="text-sm text-muted-foreground line-clamp-2">{desc}</p>
+        <div className="flex justify-end">
+          <Link to={`/detailcampaign/${id}`}>
+            <Button>Donasi Sekarang</Button>
+          </Link>
+        </div>
+      </CardContent>
+    </Card>
   )
 }
 

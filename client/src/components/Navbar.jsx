@@ -1,174 +1,160 @@
 import { Link, NavLink } from "react-router-dom";
 import { useUserStore } from "../store.jsx";
-import { url } from "../api/axios.js";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import { LogOut, User, Menu, X, HandHeart } from "lucide-react";
 
-const navbar = () => {
+const navLinks = [
+  { to: "/", label: "Home" },
+  { to: "/about", label: "About" },
+  { to: "/create-donation", label: "Buat Campaign" },
+  { to: "/how-it-works", label: "Cara Kerja" },
+];
+
+const Navbar = () => {
   const { user, clearUser } = useUserStore();
   const [openNav, setOpenNav] = useState(false);
 
-  let login = false;
-  if (user?.id) {
-    login = true;
-  }
-
-  const toggleNav = () => {
-    setOpenNav(!openNav);
-  };
+  const toggleNav = () => setOpenNav(!openNav);
 
   const handleLogout = () => {
     clearUser();
-    window.location.href = `/login`;
+    window.location.href = "/login";
   };
+
   return (
-    <nav className="navbar bg-linear-65 from-blue-500 to-blue-300 shadow-xl flex justify-between">
-      <div className="flex-none lg:hidden">
-        <button onClick={toggleNav} className="btn btn-square btn-ghost">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            className="inline-block h-5 w-5 stroke-current"
+    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
+      <div className="flex items-center justify-between px-4 py-3 max-w-7xl mx-auto">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={toggleNav}
+            className="lg:hidden p-2 rounded-lg hover:bg-accent/50 transition-colors"
+            aria-label="Toggle menu"
           >
-            {" "}
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            ></path>{" "}
-          </svg>
-        </button>
-      </div>
-      <div className="rounded">
-        <Link
-          className="btn btn-ghost text-xl hover:bg-blue-500 hover:border-none"
-          to="/"
-        >
-          HopeFund
-        </Link>
-      </div>
-      {/* nav link desktop */}
-      <div className="justify-center gap-10 text-lg hidden lg:flex">
-        <NavLink
-          className={({ isActive }) =>
-            (isActive ? "underline" : "") + " hover:underline"
-          }
-          to="/"
-        >
-          Home
-        </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            (isActive ? "underline" : "") + " hover:underline"
-          }
-          to="/about"
-        >
-          About
-        </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            (isActive ? "underline" : "") + " hover:underline"
-          }
-          to="/create-donation"
-        >
-          Buat Campaign
-        </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            (isActive ? "underline" : "") + " hover:underline"
-          }
-          to="/how-it-works"
-        >
-          Cara Kerja
-        </NavLink>
+            {openNav ? <X className="h-5 w-5 text-foreground" /> : <Menu className="h-5 w-5 text-foreground" />}
+          </button>
+
+          <Link to="/" className="flex items-center gap-2 group">
+            <HandHeart className="h-6 w-6 text-primary group-hover:scale-110 transition-transform" />
+            <span className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+              HopeFund
+            </span>
+          </Link>
+        </div>
+
+        <div className="hidden lg:flex items-center gap-1">
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              className={({ isActive }) =>
+                `px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? "bg-primary/10 text-primary font-semibold"
+                    : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                }`
+              }
+            >
+              {link.label}
+            </NavLink>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-2">
+          {user?.id ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="flex items-center gap-2 rounded-full hover:bg-accent/50 p-1 pr-3 transition-all duration-200 hover:scale-105">
+                  <Avatar size="sm">
+                    <AvatarImage
+                      src={
+                        user.avatar
+                          ? `http://localhost:5000/uploads/image/profile/${user.avatar}`
+                          : undefined
+                      }
+                      alt={user.name}
+                    />
+                    <AvatarFallback>{user.name?.charAt(0)?.toUpperCase() || "U"}</AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm text-foreground hidden sm:inline">{user.name}</span>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem disabled className="font-medium">
+                  <User className="h-4 w-4 mr-2" />
+                  {user.name}
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout} className="text-destructive">
+                  <LogOut className="h-4 w-4 mr-2" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Link to="/login">
+              <Button variant="default" size="sm" className="transition-all duration-200 hover:scale-105 hover:shadow-md">
+                Login
+              </Button>
+            </Link>
+          )}
+        </div>
       </div>
 
-      {/* backdrop */}
       {openNav && (
         <div
-          className="fixed inset-0 bg-black/10 z-40"
-          onClick={toggleNav} // ❗ klik backdrop → nav hilang
+          className="fixed inset-0 bg-black/20 z-40 lg:hidden"
+          onClick={toggleNav}
         />
       )}
 
-      {/* nav link mobile */}
       <div
-        className={`absolute z-41 top-18 rounded bg-gradient flex flex-col w-xs gap-5 p-5 font-bold ${
-          openNav ? "block" : "hidden"
-        } lg:hidden`}
+        className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          openNav ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
+        }`}
       >
-        <NavLink
-          className={({ isActive }) =>
-            (isActive ? "underline" : "") + " hover:underline"
-          }
-          to="/"
-        >
-          Home
-        </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            (isActive ? "underline" : "") + " hover:underline"
-          }
-          to="/about"
-        >
-          About
-        </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            (isActive ? "underline" : "") + " hover:underline"
-          }
-          to="/create-donation"
-        >
-          Buat Campaign
-        </NavLink>
-        <NavLink
-          className={({ isActive }) =>
-            (isActive ? "underline" : "") + " hover:underline"
-          }
-          to="/how-it-works"
-        >
-          Cara Kerja
-        </NavLink>
-
-        <button
-          onClick={handleLogout}
-          className={`${login ? "block" : "hidden"} btn btn-secondary`}
-        >
-          Logout
-        </button>
-      </div>
-
-      {user?.id ? (
-        <div className="flex gap-4 items-center">
-          <div className="flex items-center gap-2">
-            <span className="text-sm lg:text-lg text-white">{user.name}</span>
-            <div>
-              <img
-                src={`${url}/uploads/image/profile/${user.avatar}`}
-                className="w-8 lg:w-10 rounded-full"
-                alt="profile"
-              />
-            </div>
-          </div>
-          <div>
-            <button
-              onClick={handleLogout}
-              className="btn btn-secondary hidden lg:block"
+        <div className="px-4 pb-4 pt-2 space-y-1 border-t border-border/50">
+          {navLinks.map((link) => (
+            <NavLink
+              key={link.to}
+              to={link.to}
+              onClick={toggleNav}
+              className={({ isActive }) =>
+                `block px-3 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isActive
+                    ? "bg-primary/10 text-primary font-semibold"
+                    : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                }`
+              }
             >
+              {link.label}
+            </NavLink>
+          ))}
+          {user?.id && (
+            <Button
+              variant="ghost"
+              onClick={() => {
+                handleLogout();
+                toggleNav();
+              }}
+              className="w-full justify-start text-destructive hover:text-destructive mt-2"
+            >
+              <LogOut className="h-4 w-4 mr-2" />
               Logout
-            </button>
-          </div>
+            </Button>
+          )}
         </div>
-      ) : (
-        <div>
-          <Link to="/login" className="btn btn-primary">
-            Login
-          </Link>
-        </div>
-      )}
+      </div>
     </nav>
   );
 };
 
-export default navbar;
+export default Navbar;

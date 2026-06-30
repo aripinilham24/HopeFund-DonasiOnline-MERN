@@ -2,10 +2,14 @@ import { Title } from "react-head";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import Swal from "sweetalert2";
-import {api} from "../../api/axios";
+import { api } from "../../api/axios";
 import { icons } from "../../assets/index.js";
 import { useUserStore } from "../../store.jsx";
 import { showAlert } from "./alert.js";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
+import { User, Mail, Key } from "lucide-react";
 
 const Register = () => {
   const googleicon = icons.find((icon) => icon.name === "google");
@@ -77,87 +81,72 @@ const Register = () => {
     <>
       <Title>Sign Up</Title>
       <div className="min-h-screen flex flex-col-reverse lg:flex-row items-center justify-center gap-10">
-        <div className="flex items-center justfy-center bg-gray-50">
-          <form
-            onSubmit={handlesignUp}
-            className="rounded flex flex-col gap-5 shadow-lg p-5"
-          >
+        <Card className="p-6 w-full max-w-sm">
+          <form onSubmit={handlesignUp} className="flex flex-col gap-5">
             <h1 className="text-center font-bold text-2xl">Sign Up</h1>
 
-            <label
-              htmlFor="username"
-              className="flex border border-gray-400 rounded p-3 gap-2 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-blue-500 focus-within:border-blue-500"
-            >
-              <i className="bi bi-person-fill"></i>
-              <input
+            <div className="flex items-center gap-2 border border-input rounded-md px-3 focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50">
+              <User className="h-4 w-4 text-muted-foreground" />
+              <Input
                 type="text"
                 name="username"
                 placeholder="username"
                 required
-                className="lg:w-xs outline-none"
+                className="border-none shadow-none focus-visible:ring-0 p-0"
               />
-            </label>
+            </div>
 
-            <label
-              htmlFor="email"
-              className="flex border border-gray-400 rounded p-3 gap-2 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-blue-500 focus-within:border-blue-500"
-            >
-              <i className="bi bi-envelope-fill"></i>
-              <input
+            <div className="flex items-center gap-2 border border-input rounded-md px-3 focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50">
+              <Mail className="h-4 w-4 text-muted-foreground" />
+              <Input
                 type="email"
                 name="email"
                 placeholder="email"
                 required
-                className="lg:w-xs outline-none"
+                className="border-none shadow-none focus-visible:ring-0 p-0"
               />
-            </label>
+            </div>
 
-            <label
-              htmlFor="password"
-              className="flex border border-gray-400 rounded p-3 gap-2 focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-blue-500 focus-within:border-blue-500"
-            >
-              <i className="bi bi-key-fill"></i>
-              <input
+            <div className="flex items-center gap-2 border border-input rounded-md px-3 focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50">
+              <Key className="h-4 w-4 text-muted-foreground" />
+              <Input
                 type="password"
                 name="password"
                 placeholder="password"
                 required
-                className="lg:w-xs outline-none"
+                className="border-none shadow-none focus-visible:ring-0 p-0"
               />
-            </label>
+            </div>
 
-            <button
+            <Button
               type="submit"
-              className="btn bg-gradient border-none bg-gradient-hover transition-all duration-300"
               disabled={isSubmitting}
+              className="w-full bg-gradient-to-r from-indigo-500 to-teal-500 hover:from-teal-500 hover:to-indigo-500 text-white"
             >
               {isSubmitting ? "Loading ..." : "Register"}
-            </button>
+            </Button>
 
-            <a
-              className="btn btn-soft border-none bg-light text-dark hover:shadow-none hover:bg-gray-300"
-              href="#googlelogin"
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
               onClick={() => showAlert()}
             >
-              <img
-                className="h-6"
-                src={googleicon.link}
-                alt={googleicon.name}
-              />
+              <img className="h-5" src={googleicon.link} alt={googleicon.name} />
               Login with Google
-            </a>
+            </Button>
 
-            <Link to="/login" className="text-center text-sm">
+            <Link to="/login" className="text-center text-sm text-primary hover:underline">
               have account
             </Link>
           </form>
-        </div>
+        </Card>
 
         <div className="w-xs lg:w-lg flex flex-col items-center justify-center">
-          <h1 className="text-center text-blue-500 text-3xl lg:text-5xl font-bold mb-4">
+          <h1 className="text-center text-primary text-3xl lg:text-5xl font-bold mb-4">
             HopeFund
           </h1>
-          <p className="lg:text-xl">
+          <p className="text-base lg:text-xl text-muted-foreground">
             Mari jadi bagian dari gerakan kebaikan. Login atau daftar sekarang
             untuk mulai berdonasi dengan mudah, cepat, dan transparan.
           </p>
