@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { LogOut, User, Menu, X, HandHeart } from "lucide-react";
+import { url } from "../api/axios.js";
 
 const navLinks = [
   { to: "/", label: "Home" },
@@ -77,7 +78,7 @@ const Navbar = () => {
                     <AvatarImage
                       src={
                         user.avatar
-                          ? `http://localhost:5000/uploads/image/profile/${user.avatar}`
+                          ? `${url}/uploads/image/profile/${user.avatar}`
                           : undefined
                       }
                       alt={user.name}
